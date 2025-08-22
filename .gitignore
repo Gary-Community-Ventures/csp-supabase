@@ -1,0 +1,16 @@
+# Local temporary directories
+.temp/
+
+# Supabase specific temporary directories
+supabase/.temp/
+
+# Deno related files
+supabase/functions/jotform-family/deno.lock
+supabase/functions/jotform-family/deno.json
+
+# NPM related files
+supabase/functions/jotform-family/.npmrc
+
+# Common build artifacts and dependencies
+node_modules/
+dist/
