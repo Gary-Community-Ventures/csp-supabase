@@ -11,6 +11,13 @@ supabase/functions/jotform-family/deno.json
 # NPM related files
 supabase/functions/jotform-family/.npmrc
 
+# Deno related files for jotform-providers
+supabase/functions/jotform-providers/deno.lock
+supabase/functions/jotform-providers/deno.json
+
+# NPM related files for jotform-providers
+supabase/functions/jotform-providers/.npmrc
+
 # Common build artifacts and dependencies
 node_modules/
 dist/

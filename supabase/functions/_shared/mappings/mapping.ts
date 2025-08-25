@@ -7,7 +7,7 @@ export class Mapping<I, T> {
     private isType: (initial: unknown) => initial is I,
   ) {}
 
-  getValue(data: { [key: string]: unknown }): T {
+  get(data: { [key: string]: unknown }): T {
     const value = data[this.key];
 
     if (!this.isType(value)) {
