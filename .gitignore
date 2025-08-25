@@ -14,3 +14,6 @@ supabase/functions/jotform-family/.npmrc
 # Common build artifacts and dependencies
 node_modules/
 dist/
+
+# For testing
+dump.json
