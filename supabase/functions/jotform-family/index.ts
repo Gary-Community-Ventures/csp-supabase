@@ -21,27 +21,24 @@ Deno.serve(async (req) => {
 
   const data = await req.formData();
 
-  const rawRequest = data.get("rawRequest");
-  console.log(rawRequest);
   const submissionId = data.get("submissionID");
+  console.log(submissionId);
+  const rawRequest = data.get("rawRequest");
 
   if (rawRequest === null || typeof rawRequest !== "string") {
     return new Response("No rawRequest found", { status: 400 });
   }
 
   const jsonData = JSON.parse(rawRequest);
-  console.log(submissionId);
 
-  // TODO: documents, ip address, submission url, edit url, and last update date
   const jotformRes = await fetch(
     `https://api.jotform.com/submission/${submissionId}?apiKey=${jotformApiKey}`,
   );
-
-  console.log(await jotformRes.clone().text());
   const { content: jotformData } = await jotformRes.json();
 
-  const getDocumentUrl = (questionNumber: number): string[] =>
-    jotformData.answers[questionNumber].answers;
+  const getDocumentUrls = (questionNumber: number): string[] => {
+    return jotformData.answers[questionNumber].answer;
+  };
 
   let income = M.yearlyIncome.get(jsonData);
   if (M.incomeFrequency.get(jsonData) === "By Month") {
@@ -103,8 +100,8 @@ Deno.serve(async (req) => {
       M.firstChild.satisfaction.get(jsonData),
     child_satisfaction_current_care_explanation_primary:
       M.firstChild.satisfactionExplanation.get(jsonData),
-    // child_starting_next_month_primary: // TODO: fix this
-    //   M.firstChild.childCareNeeds.get(jsonData),
+    child_starting_next_month_primary:
+      M.firstChild.childCareStartingNextMonth.get(jsonData),
     child_hours_per_week_primary: M.firstChild.childCarePeriod.get(jsonData),
     child_race_ethnicity_primary: M.firstChild.raceOrEthnicity.get(jsonData),
     child_language_primary: M.firstChild.language.get(jsonData),
@@ -121,9 +118,8 @@ Deno.serve(async (req) => {
     child_satisfaction_current_care_explanation_additional:
       M.secondChild.satisfactionExplanation.get(jsonData),
     child_starting_next_month_additional:
-      M.secondChild.childCareNeeds.get(jsonData),
-    child_hours_per_week_additional:
-      M.secondChild.childCarePeriod.get(jsonData),
+      M.secondChild.childCareStartingNextMonth.get(jsonData),
+    child_hours_per_week_additional: M.secondChild.childCareNeeds.get(jsonData),
     child_care_length_additional: M.secondChild.childCarePeriod.get(jsonData),
     child_race_ethnicity_additional:
       M.secondChild.raceOrEthnicity.get(jsonData),
@@ -143,10 +139,10 @@ Deno.serve(async (req) => {
     submitted_at: jotformData.created_at,
     last_update_date: jotformData.updated_at,
     signature: jotformData.answers[144].answer,
-    proof_of_residence: getDocumentUrl(123),
-    verification_child_age: getDocumentUrl(122),
-    proof_of_income: getDocumentUrl(63),
-    current_benefits_proof: getDocumentUrl(62),
+    proof_of_residence: getDocumentUrls(123),
+    verification_child_age: getDocumentUrls(122),
+    proof_of_income: getDocumentUrls(63),
+    current_benefits_proof: getDocumentUrls(62),
   });
 
   if (error !== null) {

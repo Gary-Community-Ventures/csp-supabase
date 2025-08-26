@@ -67,7 +67,13 @@ export const M = {
   assetsOverMillion: new Mapping("q84_doesYour84", yesNoParser, isString),
   currentChildCarePrograms: new Mapping(
     "q19_areYou",
-    arrayCheckboxesParser(),
+    arrayCheckboxesParser({
+      "Colorado Child Care Assistance Program (CCCAP)": "cccap",
+      "Head Start / Early Head Start": "head_start",
+      "Denver Preschool Program (DPP)": "dpp",
+      "Universal Preschool (UPK)": "upk",
+      None: "none",
+    }),
     isArrayOrEmptyString,
   ),
   whyNeedChildCare: new Mapping("q68_typeA68", checkboxesParser(), isString),
@@ -80,6 +86,11 @@ export const M = {
     satisfactionExplanation: new Mapping(
       "q34_pleaseTell",
       noChangeParser,
+      isString,
+    ),
+    childCareStartingNextMonth: new Mapping(
+      "q93_typeA93",
+      yesNoParser,
       isString,
     ),
     childCareNeeds: new Mapping("q47_typeA", noChangeParser, isString),
@@ -103,6 +114,11 @@ export const M = {
       noChangeParser,
       isString,
     ),
+    childCareStartingNextMonth: new Mapping(
+      "q100_doYou",
+      yesNoParser,
+      isString,
+    ),
     childCareNeeds: new Mapping(
       "q57_pleaseSpecify57",
       noChangeParser,
@@ -122,7 +138,13 @@ export const M = {
   },
   currentBenefitsPrograms: new Mapping(
     "q60_doYou60",
-    arrayCheckboxesParser(),
+    arrayCheckboxesParser({
+      "Health First Colorado (Medicaid)": "medicaid",
+      "Colorado Works (TANF)": "tanf",
+      "SNAP (food assistance)": "snap",
+      "WIC (food assistance for women and children)": "wic",
+      "No, I do not participate in any of the above programs": "none",
+    }),
     isArrayOrEmptyString,
   ),
   agreements: {

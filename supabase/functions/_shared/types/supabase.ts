@@ -105,7 +105,8 @@ export type Database = {
           child_satisfaction_current_care_explanation_additional: string | null
           child_satisfaction_current_care_explanation_primary: string | null
           child_satisfaction_current_care_primary: string | null
-          child_starting_next_month_additional: string | null
+          child_starting_next_month_additional: boolean | null
+          child_starting_next_month_primary: boolean | null
           city_additional: string | null
           city_primary: string | null
           created_at: string
@@ -183,7 +184,8 @@ export type Database = {
           child_satisfaction_current_care_explanation_additional?: string | null
           child_satisfaction_current_care_explanation_primary?: string | null
           child_satisfaction_current_care_primary?: string | null
-          child_starting_next_month_additional?: string | null
+          child_starting_next_month_additional?: boolean | null
+          child_starting_next_month_primary?: boolean | null
           city_additional?: string | null
           city_primary?: string | null
           created_at?: string
@@ -261,7 +263,8 @@ export type Database = {
           child_satisfaction_current_care_explanation_additional?: string | null
           child_satisfaction_current_care_explanation_primary?: string | null
           child_satisfaction_current_care_primary?: string | null
-          child_starting_next_month_additional?: string | null
+          child_starting_next_month_additional?: boolean | null
+          child_starting_next_month_primary?: boolean | null
           city_additional?: string | null
           city_primary?: string | null
           created_at?: string
