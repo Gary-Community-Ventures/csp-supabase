@@ -25,7 +25,11 @@ export function remapParser(map: Record<string, string> = {}) {
 }
 
 export function checkboxesParser(map: Record<string, string> = {}) {
-  return (value: string): { [key: string]: boolean } => {
+  return (value: string): { [key: string]: boolean } | null => {
+    if (value === "") {
+      return null;
+    }
+
     const parts = value.split("\r\n");
 
     return parts.reduce(
@@ -42,7 +46,11 @@ export function checkboxesParser(map: Record<string, string> = {}) {
 }
 
 export function arrayCheckboxesParser(map: Record<string, string> = {}) {
-  return (value: string[]): { [key: string]: boolean } => {
+  return (value: string[] | ""): { [key: string]: boolean } | null => {
+    if (value === "") {
+      return null;
+    }
+
     const values = Object.values(map).reduce(
       (acc, key) => {
         acc[key] = false;

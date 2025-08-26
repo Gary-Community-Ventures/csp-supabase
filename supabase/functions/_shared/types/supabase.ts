@@ -14,50 +14,109 @@ export type Database = {
   }
   public: {
     Tables: {
+      child: {
+        Row: {
+          created_at: string
+          dob: string | null
+          family_id: number | null
+          first_name: string | null
+          id: number
+          last_name: string | null
+          middle_name: string | null
+        }
+        Insert: {
+          created_at?: string
+          dob?: string | null
+          family_id?: number | null
+          first_name?: string | null
+          id?: number
+          last_name?: string | null
+          middle_name?: string | null
+        }
+        Update: {
+          created_at?: string
+          dob?: string | null
+          family_id?: number | null
+          first_name?: string | null
+          id?: number
+          last_name?: string | null
+          middle_name?: string | null
+        }
+        Relationships: []
+      }
+      family: {
+        Row: {
+          approved: string | null
+          created_at: string
+          id: number
+          referred_by: string | null
+          size: number | null
+          yearly_income: number | null
+          zip: string | null
+        }
+        Insert: {
+          approved?: string | null
+          created_at?: string
+          id?: number
+          referred_by?: string | null
+          size?: number | null
+          yearly_income?: number | null
+          zip?: string | null
+        }
+        Update: {
+          approved?: string | null
+          created_at?: string
+          id?: number
+          referred_by?: string | null
+          size?: number | null
+          yearly_income?: number | null
+          zip?: string | null
+        }
+        Relationships: []
+      }
       family_application: {
         Row: {
-          add_additional: string | null
-          additional_child: string | null
+          add_additional: boolean | null
+          additional_child: boolean | null
           address_1_additional: string | null
           address_1_primary: string | null
           address_2_additional: string | null
           address_2_primary: string | null
-          assets_one_million: string | null
+          assets_one_million: boolean | null
+          child_care_length_additional: string | null
           child_care_length_primary: string | null
-          child_care_length_secondary: string | null
           child_current_care_additional: Json | null
           child_current_care_primary: Json | null
+          child_dob_additional: string | null
           child_dob_primary: string | null
-          child_dob_secondary: string | null
           child_first_name_additional: string | null
           child_first_name_primary: string | null
+          child_hours_per_week_additional: string | null
           child_hours_per_week_primary: string | null
-          child_hours_per_week_secondary: string | null
+          child_language_additional: Json | null
           child_language_primary: Json | null
-          child_language_secondary: Json | null
           child_last_name_additional: string | null
           child_last_name_primary: string | null
+          child_race_ethnicity_additional: Json | null
           child_race_ethnicity_primary: Json | null
-          child_race_ethnicity_secondary: Json | null
-          child_receiving_care_primary: string | null
-          child_receiving_care_secondary: string | null
+          child_receiving_care_additional: boolean | null
+          child_receiving_care_primary: boolean | null
+          child_satisfaction_current_care_additional: string | null
+          child_satisfaction_current_care_explanation_additional: string | null
           child_satisfaction_current_care_explanation_primary: string | null
-          child_satisfaction_current_care_explanation_secondary: string | null
           child_satisfaction_current_care_primary: string | null
-          child_satisfaction_current_care_secondary: string | null
-          child_starting_next_month_primary: string | null
-          child_starting_next_month_secondary: string | null
+          child_starting_next_month_additional: string | null
           city_additional: string | null
           city_primary: string | null
           created_at: string
-          current_benefits: Json | null
-          current_benefits_documents: Json | null
           "current_benefits_pre-eligibility": Json | null
-          current_benefits_proof: Json | null
+          current_benefits_proof: string[] | null
+          current_childcare_benefits: Json | null
           dob_additional: string | null
           dob_primary: string | null
           email_additional: string | null
           email_primary: string | null
+          first_name_additional: string | null
           first_name_primary: string | null
           household_size: number | null
           id: number
@@ -69,9 +128,10 @@ export type Database = {
           link_id: string | null
           phone_additional: string | null
           phone_primary: string | null
-          photo_release: string | null
+          photo_release: boolean | null
           preferred_language: string | null
-          proof_of_residence: string | null
+          proof_of_income: string[] | null
+          proof_of_residence: string[] | null
           race_ethnicity_additional: Json | null
           race_ethnicity_primary: Json | null
           referrer_cap_provider: string | null
@@ -82,60 +142,59 @@ export type Database = {
           submission_ip: string | null
           submission_url: string | null
           submitted_at: string | null
-          tc_1: string | null
-          tc_2: string | null
-          tc_3: string | null
-          tc_4: string | null
-          tc_5: string | null
-          tc_6: string | null
+          tc_change_providers: boolean | null
+          tc_dependent_on_CAP_approval: boolean | null
+          tc_privacy_policy: boolean | null
+          tc_responsible_for_finding_care: boolean | null
+          tc_TCPA: boolean | null
+          tc_terms_and_conditions: boolean | null
           timer: string | null
-          verification_child_age: string | null
+          verification_child_age: string[] | null
           zip_additional: string | null
-          zip_primary: number | null
+          zip_primary: string | null
         }
         Insert: {
-          add_additional?: string | null
-          additional_child?: string | null
+          add_additional?: boolean | null
+          additional_child?: boolean | null
           address_1_additional?: string | null
           address_1_primary?: string | null
           address_2_additional?: string | null
           address_2_primary?: string | null
-          assets_one_million?: string | null
+          assets_one_million?: boolean | null
+          child_care_length_additional?: string | null
           child_care_length_primary?: string | null
-          child_care_length_secondary?: string | null
           child_current_care_additional?: Json | null
           child_current_care_primary?: Json | null
+          child_dob_additional?: string | null
           child_dob_primary?: string | null
-          child_dob_secondary?: string | null
           child_first_name_additional?: string | null
           child_first_name_primary?: string | null
+          child_hours_per_week_additional?: string | null
           child_hours_per_week_primary?: string | null
-          child_hours_per_week_secondary?: string | null
+          child_language_additional?: Json | null
           child_language_primary?: Json | null
-          child_language_secondary?: Json | null
           child_last_name_additional?: string | null
           child_last_name_primary?: string | null
+          child_race_ethnicity_additional?: Json | null
           child_race_ethnicity_primary?: Json | null
-          child_race_ethnicity_secondary?: Json | null
-          child_receiving_care_primary?: string | null
-          child_receiving_care_secondary?: string | null
+          child_receiving_care_additional?: boolean | null
+          child_receiving_care_primary?: boolean | null
+          child_satisfaction_current_care_additional?: string | null
+          child_satisfaction_current_care_explanation_additional?: string | null
           child_satisfaction_current_care_explanation_primary?: string | null
-          child_satisfaction_current_care_explanation_secondary?: string | null
           child_satisfaction_current_care_primary?: string | null
-          child_satisfaction_current_care_secondary?: string | null
-          child_starting_next_month_primary?: string | null
-          child_starting_next_month_secondary?: string | null
+          child_starting_next_month_additional?: string | null
           city_additional?: string | null
           city_primary?: string | null
           created_at?: string
-          current_benefits?: Json | null
-          current_benefits_documents?: Json | null
           "current_benefits_pre-eligibility"?: Json | null
-          current_benefits_proof?: Json | null
+          current_benefits_proof?: string[] | null
+          current_childcare_benefits?: Json | null
           dob_additional?: string | null
           dob_primary?: string | null
           email_additional?: string | null
           email_primary?: string | null
+          first_name_additional?: string | null
           first_name_primary?: string | null
           household_size?: number | null
           id?: number
@@ -147,9 +206,10 @@ export type Database = {
           link_id?: string | null
           phone_additional?: string | null
           phone_primary?: string | null
-          photo_release?: string | null
+          photo_release?: boolean | null
           preferred_language?: string | null
-          proof_of_residence?: string | null
+          proof_of_income?: string[] | null
+          proof_of_residence?: string[] | null
           race_ethnicity_additional?: Json | null
           race_ethnicity_primary?: Json | null
           referrer_cap_provider?: string | null
@@ -160,60 +220,59 @@ export type Database = {
           submission_ip?: string | null
           submission_url?: string | null
           submitted_at?: string | null
-          tc_1?: string | null
-          tc_2?: string | null
-          tc_3?: string | null
-          tc_4?: string | null
-          tc_5?: string | null
-          tc_6?: string | null
+          tc_change_providers?: boolean | null
+          tc_dependent_on_CAP_approval?: boolean | null
+          tc_privacy_policy?: boolean | null
+          tc_responsible_for_finding_care?: boolean | null
+          tc_TCPA?: boolean | null
+          tc_terms_and_conditions?: boolean | null
           timer?: string | null
-          verification_child_age?: string | null
+          verification_child_age?: string[] | null
           zip_additional?: string | null
-          zip_primary?: number | null
+          zip_primary?: string | null
         }
         Update: {
-          add_additional?: string | null
-          additional_child?: string | null
+          add_additional?: boolean | null
+          additional_child?: boolean | null
           address_1_additional?: string | null
           address_1_primary?: string | null
           address_2_additional?: string | null
           address_2_primary?: string | null
-          assets_one_million?: string | null
+          assets_one_million?: boolean | null
+          child_care_length_additional?: string | null
           child_care_length_primary?: string | null
-          child_care_length_secondary?: string | null
           child_current_care_additional?: Json | null
           child_current_care_primary?: Json | null
+          child_dob_additional?: string | null
           child_dob_primary?: string | null
-          child_dob_secondary?: string | null
           child_first_name_additional?: string | null
           child_first_name_primary?: string | null
+          child_hours_per_week_additional?: string | null
           child_hours_per_week_primary?: string | null
-          child_hours_per_week_secondary?: string | null
+          child_language_additional?: Json | null
           child_language_primary?: Json | null
-          child_language_secondary?: Json | null
           child_last_name_additional?: string | null
           child_last_name_primary?: string | null
+          child_race_ethnicity_additional?: Json | null
           child_race_ethnicity_primary?: Json | null
-          child_race_ethnicity_secondary?: Json | null
-          child_receiving_care_primary?: string | null
-          child_receiving_care_secondary?: string | null
+          child_receiving_care_additional?: boolean | null
+          child_receiving_care_primary?: boolean | null
+          child_satisfaction_current_care_additional?: string | null
+          child_satisfaction_current_care_explanation_additional?: string | null
           child_satisfaction_current_care_explanation_primary?: string | null
-          child_satisfaction_current_care_explanation_secondary?: string | null
           child_satisfaction_current_care_primary?: string | null
-          child_satisfaction_current_care_secondary?: string | null
-          child_starting_next_month_primary?: string | null
-          child_starting_next_month_secondary?: string | null
+          child_starting_next_month_additional?: string | null
           city_additional?: string | null
           city_primary?: string | null
           created_at?: string
-          current_benefits?: Json | null
-          current_benefits_documents?: Json | null
           "current_benefits_pre-eligibility"?: Json | null
-          current_benefits_proof?: Json | null
+          current_benefits_proof?: string[] | null
+          current_childcare_benefits?: Json | null
           dob_additional?: string | null
           dob_primary?: string | null
           email_additional?: string | null
           email_primary?: string | null
+          first_name_additional?: string | null
           first_name_primary?: string | null
           household_size?: number | null
           id?: number
@@ -225,9 +284,10 @@ export type Database = {
           link_id?: string | null
           phone_additional?: string | null
           phone_primary?: string | null
-          photo_release?: string | null
+          photo_release?: boolean | null
           preferred_language?: string | null
-          proof_of_residence?: string | null
+          proof_of_income?: string[] | null
+          proof_of_residence?: string[] | null
           race_ethnicity_additional?: Json | null
           race_ethnicity_primary?: Json | null
           referrer_cap_provider?: string | null
@@ -238,16 +298,103 @@ export type Database = {
           submission_ip?: string | null
           submission_url?: string | null
           submitted_at?: string | null
-          tc_1?: string | null
-          tc_2?: string | null
-          tc_3?: string | null
-          tc_4?: string | null
-          tc_5?: string | null
-          tc_6?: string | null
+          tc_change_providers?: boolean | null
+          tc_dependent_on_CAP_approval?: boolean | null
+          tc_privacy_policy?: boolean | null
+          tc_responsible_for_finding_care?: boolean | null
+          tc_TCPA?: boolean | null
+          tc_terms_and_conditions?: boolean | null
           timer?: string | null
-          verification_child_age?: string | null
+          verification_child_age?: string[] | null
           zip_additional?: string | null
-          zip_primary?: number | null
+          zip_primary?: string | null
+        }
+        Relationships: []
+      }
+      guardian: {
+        Row: {
+          address_1: string | null
+          address_2: string | null
+          city: string | null
+          created_at: string
+          email: string | null
+          family_id: number | null
+          first_name: string | null
+          id: number
+          last_name: string | null
+          phone_number: string | null
+          state: string | null
+          type: string | null
+          zip: string | null
+        }
+        Insert: {
+          address_1?: string | null
+          address_2?: string | null
+          city?: string | null
+          created_at?: string
+          email?: string | null
+          family_id?: number | null
+          first_name?: string | null
+          id?: number
+          last_name?: string | null
+          phone_number?: string | null
+          state?: string | null
+          type?: string | null
+          zip?: string | null
+        }
+        Update: {
+          address_1?: string | null
+          address_2?: string | null
+          city?: string | null
+          created_at?: string
+          email?: string | null
+          family_id?: number | null
+          first_name?: string | null
+          id?: number
+          last_name?: string | null
+          phone_number?: string | null
+          state?: string | null
+          type?: string | null
+          zip?: string | null
+        }
+        Relationships: []
+      }
+      provider: {
+        Row: {
+          address_1: string | null
+          address_2: string | null
+          approved: string | null
+          city: string | null
+          created_at: string
+          id: number
+          name: string | null
+          state: string | null
+          type: string | null
+          zip: string | null
+        }
+        Insert: {
+          address_1?: string | null
+          address_2?: string | null
+          approved?: string | null
+          city?: string | null
+          created_at?: string
+          id?: number
+          name?: string | null
+          state?: string | null
+          type?: string | null
+          zip?: string | null
+        }
+        Update: {
+          address_1?: string | null
+          address_2?: string | null
+          approved?: string | null
+          city?: string | null
+          created_at?: string
+          id?: number
+          name?: string | null
+          state?: string | null
+          type?: string | null
+          zip?: string | null
         }
         Relationships: []
       }
@@ -488,27 +635,6 @@ export type Database = {
           w9?: string | null
           when_families_pay?: string | null
           zip?: string | null
-        }
-        Relationships: []
-      }
-      testing: {
-        Row: {
-          created_at: string
-          first_name: string
-          id: number
-          last_name: string
-        }
-        Insert: {
-          created_at?: string
-          first_name: string
-          id?: number
-          last_name: string
-        }
-        Update: {
-          created_at?: string
-          first_name?: string
-          id?: number
-          last_name?: string
         }
         Relationships: []
       }

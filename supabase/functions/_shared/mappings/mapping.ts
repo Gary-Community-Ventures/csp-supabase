@@ -1,5 +1,3 @@
-import { isObject, isString } from "./isType.ts";
-
 export class Mapping<I, T> {
   constructor(
     private key: string,
@@ -11,7 +9,7 @@ export class Mapping<I, T> {
     const value = data[this.key];
 
     if (!this.isType(value)) {
-      throw new Error("Invalid type");
+      throw new Error(`Invalid type for ${this.key}`);
     }
 
     return this.parser(value);

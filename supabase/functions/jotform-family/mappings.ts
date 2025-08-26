@@ -1,4 +1,8 @@
-import { isArray, isObject, isString } from "../_shared/mappings/isType.ts";
+import {
+  isArrayOrEmptyString,
+  isObject,
+  isString,
+} from "../_shared/mappings/isType.ts";
 import {
   noChangeParser,
   numberOrNullParser,
@@ -12,50 +16,49 @@ import {
 } from "../_shared/mappings/parsers.ts";
 import { Mapping } from "../_shared/mappings/mapping.ts";
 
+const nameObject = isObject(["first", "last"]);
+const birthdateObject = isObject(["month", "day", "year"]);
+const phoneNumberObject = isObject(["full"]);
+const addressObject = isObject([
+  "addr_line1",
+  "addr_line2",
+  "city",
+  "state",
+  "postal",
+]);
+
 export const M = {
   linkId: new Mapping("q176_link_id", stringOrNullParser, isString),
   selectedLanguage: new Mapping("input_language", noChangeParser, isString),
   providerName: new Mapping("q178_pleaseEnter178", noChangeParser, isString),
   primaryGuardian: {
-    name: new Mapping(
-      "q11_pleaseEnter",
-      noChangeParser,
-      isObject(["first", "last"]),
-    ),
-    birthdate: new Mapping(
-      "q66_whatIs66",
-      birthdateParser,
-      isObject(["month", "day", "year"]),
-    ),
+    name: new Mapping("q11_pleaseEnter", noChangeParser, nameObject),
+    birthdate: new Mapping("q66_whatIs66", birthdateParser, birthdateObject),
     email: new Mapping("q5_email", noChangeParser, isString),
-    phone: new Mapping("q6_phoneNumber", phoneNumberParser, isObject(["full"])),
-    address: new Mapping(
-      "q7_whatIs7",
-      noChangeParser,
-      isObject(["addr_line1", "addr_line2", "city", "state", "postal"]),
+    phone: new Mapping("q6_phoneNumber", phoneNumberParser, phoneNumberObject),
+    address: new Mapping("q7_whatIs7", noChangeParser, addressObject),
+    raceOrEthnicity: new Mapping(
+      "q117_whatIs117",
+      checkboxesParser(),
+      isString,
     ),
-    demographics: new Mapping("q117_whatIs117", checkboxesParser(), isString),
   },
   hasSecondaryGuardian: new Mapping("q80_typeA80", yesNoParser, isString),
   secondaryGuardian: {
-    name: new Mapping(
-      "q12_pleaseEnter12",
-      noChangeParser,
-      isObject(["first", "last"]),
-    ),
+    name: new Mapping("q12_pleaseEnter12", noChangeParser, nameObject),
     birthdateParser: new Mapping(
       "q67_whatIs67",
       birthdateParser,
-      isObject(["month", "day", "year"]),
+      birthdateObject,
     ),
     email: new Mapping("q13_whatIs13", noChangeParser, isString),
-    phone: new Mapping("q14_whatIs14", phoneNumberParser, isObject(["full"])),
-    address: new Mapping(
-      "q15_whatIs15",
-      noChangeParser,
-      isObject(["addr_line1", "addr_line2", "city", "state", "postal"]),
+    phone: new Mapping("q14_whatIs14", phoneNumberParser, phoneNumberObject),
+    address: new Mapping("q15_whatIs15", noChangeParser, addressObject),
+    raceOrEthnicity: new Mapping(
+      "q118_whatIs118",
+      checkboxesParser(),
+      isString,
     ),
-    demographics: new Mapping("q118_whatIs118", checkboxesParser(), isString),
   },
   householdSize: new Mapping("q16_includingYou", numberOrNullParser, isString),
   incomeFrequency: new Mapping("q180_whenYou", noChangeParser, isString),
@@ -63,22 +66,14 @@ export const M = {
   yearlyIncome: new Mapping("q181_whatIs181", numberOrNullParser, isString),
   assetsOverMillion: new Mapping("q84_doesYour84", yesNoParser, isString),
   currentChildCarePrograms: new Mapping(
-    "q19_whatIs19",
+    "q19_areYou",
     arrayCheckboxesParser(),
-    isArray,
+    isArrayOrEmptyString,
   ),
   whyNeedChildCare: new Mapping("q68_typeA68", checkboxesParser(), isString),
   firstChild: {
-    name: new Mapping(
-      "q37_pleaseEnter37",
-      noChangeParser,
-      isObject(["first", "last"]),
-    ),
-    birthdate: new Mapping(
-      "q38_whatIs38",
-      birthdateParser,
-      isObject(["year", "month", "day"]),
-    ),
+    name: new Mapping("q37_pleaseEnter37", noChangeParser, nameObject),
+    birthdate: new Mapping("q38_whatIs38", birthdateParser, birthdateObject),
     currentlyReceivingCare: new Mapping("q90_isYour90", yesNoParser, isString),
     typeOfCare: new Mapping("q70_typeA70", checkboxesParser(), isString),
     satisfaction: new Mapping("q134_howSatisfied", noChangeParser, isString),
@@ -89,20 +84,16 @@ export const M = {
     ),
     childCareNeeds: new Mapping("q47_typeA", noChangeParser, isString),
     childCarePeriod: new Mapping("q48_pleaseSpecify", noChangeParser, isString),
-    demographics: new Mapping("q115_typeA115", checkboxesParser(), isString),
-    childLanguage: new Mapping("q71_typeA71", checkboxesParser(), isString),
+    raceOrEthnicity: new Mapping("q115_typeA115", checkboxesParser(), isString),
+    language: new Mapping("q71_typeA71", checkboxesParser(), isString),
   },
   hasSecondChild: new Mapping("q97_wouldYou", yesNoParser, isString),
   secondChild: {
-    name: new Mapping(
-      "q50_pleaseEnter50",
-      noChangeParser,
-      isObject(["first", "last"]),
-    ),
+    name: new Mapping("q50_pleaseEnter2ndChild", noChangeParser, nameObject),
     birthdate: new Mapping(
-      "q51_whatIs51",
+      "q51_whatIsDOB2ndChild",
       birthdateParser,
-      isObject(["year", "month", "day"]),
+      birthdateObject,
     ),
     currentlyReceivingCare: new Mapping("q99_isYour", yesNoParser, isString),
     typeOfCare: new Mapping("q72_typeA72", checkboxesParser(), isString),
@@ -122,13 +113,17 @@ export const M = {
       noChangeParser,
       isString,
     ),
-    demographics: new Mapping("q116_whatIs116", checkboxesParser(), isString),
-    childLanguage: new Mapping("q73_whatIs73", checkboxesParser(), isString),
+    raceOrEthnicity: new Mapping(
+      "q116_whatIs116",
+      checkboxesParser(),
+      isString,
+    ),
+    language: new Mapping("q73_whatIs73", checkboxesParser(), isString),
   },
   currentBenefitsPrograms: new Mapping(
     "q60_doYou60",
     arrayCheckboxesParser(),
-    isArray,
+    isArrayOrEmptyString,
   ),
   agreements: {
     responsibleForFindingCare: new Mapping(
