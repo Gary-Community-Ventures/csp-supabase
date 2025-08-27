@@ -3,7 +3,6 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 import { Database } from "../_shared/types/supabase.ts";
 import { M } from "./mappings.ts";
 import * as Sentry from "npm:@sentry/deno";
-import { json } from "node:stream/consumers";
 
 const supabaseUrl = Deno.env.get("SUPABASE_URL");
 const supabaseAnonKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
@@ -41,13 +40,11 @@ Deno.serve(async (req) => {
     }
 
     const jsonData = JSON.parse(rawRequest);
-    console.log(jsonData);
 
     const jotformRes = await fetch(
       `https://api.jotform.com/submission/${submissionId}?apiKey=${jotformApiKey}`,
     );
     const { content: jotformData } = await jotformRes.json();
-    console.log(jotformData);
 
     const getDocumentUrls = (questionNumber: number): string[] => {
       return jotformData.answers[questionNumber].answer;
@@ -97,9 +94,10 @@ Deno.serve(async (req) => {
       care_setting: M.careSetting.get(jsonData),
       related_to_some_children: M.relatedToSomeChildren.get(jsonData),
       related_to_relationship: M.relatedToRelationship.get(jsonData),
-      related_to_all_children: M.relatedToAllChildren.get(jsonData), // TODO: check if hidden
+      related_to_all_children: M.relatedToAllChildren.get(jsonData),
       number_of_children: M.numberOfChildren.get(jsonData),
       children_under_2: M.childrenUnder2.get(jsonData),
+      cpr_certified: M.cprCertified.get(jsonData),
       other_adults: M.otherAdults.get(jsonData),
       pay_types: M.payTypes.get(jsonData),
       pay_rate: M.payRate.get(jsonData),
