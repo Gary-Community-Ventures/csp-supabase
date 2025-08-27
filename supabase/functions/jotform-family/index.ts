@@ -31,6 +31,10 @@ Deno.serve(async (req) => {
     console.log(submissionId);
     const rawRequest = data.get("rawRequest");
 
+    if (submissionId === null || typeof submissionId !== "string") {
+      return new Response("No submissionId found", { status: 400 });
+    }
+
     if (rawRequest === null || typeof rawRequest !== "string") {
       return new Response("No rawRequest found", { status: 400 });
     }
@@ -62,6 +66,7 @@ Deno.serve(async (req) => {
     const secondChildName = M.secondChild.name.get(jsonData);
 
     const { error } = await supabase.from("family_application").insert({
+      submission_id: submissionId,
       preferred_language: M.selectedLanguage.get(jsonData),
       referrer_cap_provider: M.providerName.get(jsonData),
       first_name_primary: primaryName.first,

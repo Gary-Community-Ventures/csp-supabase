@@ -1,3 +1,6 @@
+import { Json } from "../types/supabase.ts";
+import { Table } from "./isType.ts";
+
 export function noChangeParser<T>(value: T): T {
   return value;
 }
@@ -6,12 +9,28 @@ export function stringOrNullParser(value: string): string | null {
   return value === "" ? null : value;
 }
 
-export function yesNoParser(value: string): boolean {
+export function yesNoParser(value: string): boolean | null {
+  if (value === "") {
+    return null;
+  }
+
   return value === "Yes";
 }
 
-export function acceptParser(value: string): boolean {
+export function acceptParser(value: string): boolean | null {
+  if (value === "") {
+    return null;
+  }
+
   return value === "Accept";
+}
+
+export function acceptedParser(value: string): boolean | null {
+  if (value === "") {
+    return null;
+  }
+
+  return value === "Accepted";
 }
 
 export function numberOrNullParser(value: string): number | null {
@@ -72,7 +91,7 @@ export function birthdateParser(value: {
   year: string;
   month: string;
   day: string;
-}): Date {
+}): Date | null {
   if (value.year === "" || value.month === "" || value.day === "") {
     return null;
   }
@@ -84,6 +103,43 @@ export function birthdateParser(value: {
   );
 }
 
-export const phoneNumberParser = (value: { full: string }): string => {
+export function phoneNumberParser(value: { full: string }): string {
   return value.full.replaceAll(/\D/g, "");
-};
+}
+
+export function jsonParser(value: string): Json | null {
+  if (value === "") {
+    return null;
+  }
+
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
+  }
+}
+
+export function tableParser(questionCount: number) {
+  return (value: Table): (string | null)[] => {
+    const values: (string | null)[] = [];
+
+    for (const [k, v] of Object.entries(value)) {
+      if (k === "colIds" || k === "rowIds") {
+        continue;
+      }
+
+      if (Array.isArray(v)) {
+        values.push(v[0]);
+        continue;
+      }
+
+      values.push(Object.values(v)[0]);
+    }
+
+    while (values.length < questionCount) {
+      values.push(null);
+    }
+
+    return values;
+  };
+}

@@ -41,3 +41,14 @@ export function isArrayOrEmptyString(value: unknown): value is string[] | "" {
 
   return value.every((value) => typeof value === "string");
 }
+
+export type Table = {
+  colIds: string;
+  rowIds: string;
+} & {
+  [key: string]: { [key: string]: string } | string[];
+};
+
+export function isTable(_value: unknown): _value is Table {
+  return true; // i'm good
+}

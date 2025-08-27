@@ -14,6 +14,71 @@ export type Database = {
   }
   public: {
     Tables: {
+      alembic_version: {
+        Row: {
+          version_num: string
+        }
+        Insert: {
+          version_num: string
+        }
+        Update: {
+          version_num?: string
+        }
+        Relationships: []
+      }
+      allocated_care_day: {
+        Row: {
+          amount_cents: number | null
+          care_month_allocation_id: number | null
+          created_at: string
+          date: string | null
+          deleted_at: string | null
+          id: number
+          last_submitted_at: string | null
+          locked_date: string | null
+          payment_distribution_requested: boolean | null
+          provider_google_sheets_id: number | null
+          type: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          amount_cents?: number | null
+          care_month_allocation_id?: number | null
+          created_at?: string
+          date?: string | null
+          deleted_at?: string | null
+          id?: number
+          last_submitted_at?: string | null
+          locked_date?: string | null
+          payment_distribution_requested?: boolean | null
+          provider_google_sheets_id?: number | null
+          type?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          amount_cents?: number | null
+          care_month_allocation_id?: number | null
+          created_at?: string
+          date?: string | null
+          deleted_at?: string | null
+          id?: number
+          last_submitted_at?: string | null
+          locked_date?: string | null
+          payment_distribution_requested?: boolean | null
+          provider_google_sheets_id?: number | null
+          type?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "allocated_care_day_care_month_allocation_id_fkey"
+            columns: ["care_month_allocation_id"]
+            isOneToOne: false
+            referencedRelation: "monthly_allocation"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       child: {
         Row: {
           created_at: string
@@ -140,6 +205,7 @@ export type Database = {
           state_additional: string | null
           state_primary: string | null
           submission_edit_url: string | null
+          submission_id: string | null
           submission_ip: string | null
           submission_url: string | null
           submitted_at: string | null
@@ -219,6 +285,7 @@ export type Database = {
           state_additional?: string | null
           state_primary?: string | null
           submission_edit_url?: string | null
+          submission_id?: string | null
           submission_ip?: string | null
           submission_url?: string | null
           submitted_at?: string | null
@@ -298,6 +365,7 @@ export type Database = {
           state_additional?: string | null
           state_primary?: string | null
           submission_edit_url?: string | null
+          submission_id?: string | null
           submission_ip?: string | null
           submission_url?: string | null
           submitted_at?: string | null
@@ -311,6 +379,45 @@ export type Database = {
           verification_child_age?: string[] | null
           zip_additional?: string | null
           zip_primary?: string | null
+        }
+        Relationships: []
+      }
+      family_invitation: {
+        Row: {
+          accepted: boolean | null
+          created_at: string
+          email_sent: boolean | null
+          id: number
+          invite_email: string | null
+          opened_at: string | null
+          provider_google_sheet_id: number | null
+          public_id: string | null
+          sms_sent: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          accepted?: boolean | null
+          created_at?: string
+          email_sent?: boolean | null
+          id?: number
+          invite_email?: string | null
+          opened_at?: string | null
+          provider_google_sheet_id?: number | null
+          public_id?: string | null
+          sms_sent?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          accepted?: boolean | null
+          created_at?: string
+          email_sent?: boolean | null
+          id?: number
+          invite_email?: string | null
+          opened_at?: string | null
+          provider_google_sheet_id?: number | null
+          public_id?: string | null
+          sms_sent?: boolean | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -362,6 +469,96 @@ export type Database = {
         }
         Relationships: []
       }
+      monthly_allocation: {
+        Row: {
+          allocation_cents: number | null
+          created_at: string
+          date: string | null
+          google_sheets_child_id: number | null
+          id: number
+          updated_at: string | null
+        }
+        Insert: {
+          allocation_cents?: number | null
+          created_at?: string
+          date?: string | null
+          google_sheets_child_id?: number | null
+          id?: number
+          updated_at?: string | null
+        }
+        Update: {
+          allocation_cents?: number | null
+          created_at?: string
+          date?: string | null
+          google_sheets_child_id?: number | null
+          id?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      payment_rate: {
+        Row: {
+          created_at: string
+          full_day_rate_cents: number | null
+          google_sheets_child_id: number | null
+          google_sheets_provider_id: number | null
+          half_day_rate_cents: number | null
+          id: number
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          full_day_rate_cents?: number | null
+          google_sheets_child_id?: number | null
+          google_sheets_provider_id?: number | null
+          half_day_rate_cents?: number | null
+          id?: number
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          full_day_rate_cents?: number | null
+          google_sheets_child_id?: number | null
+          google_sheets_provider_id?: number | null
+          half_day_rate_cents?: number | null
+          id?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      payment_request: {
+        Row: {
+          amount_in_cents: number | null
+          care_day_ids: number[] | null
+          care_days_count: number | null
+          created_at: string
+          google_sheets_child_id: number | null
+          google_sheets_provider_id: number | null
+          id: number
+          updated_at: string | null
+        }
+        Insert: {
+          amount_in_cents?: number | null
+          care_day_ids?: number[] | null
+          care_days_count?: number | null
+          created_at?: string
+          google_sheets_child_id?: number | null
+          google_sheets_provider_id?: number | null
+          id?: number
+          updated_at?: string | null
+        }
+        Update: {
+          amount_in_cents?: number | null
+          care_day_ids?: number[] | null
+          care_days_count?: number | null
+          created_at?: string
+          google_sheets_child_id?: number | null
+          google_sheets_provider_id?: number | null
+          id?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       provider: {
         Row: {
           address_1: string | null
@@ -407,8 +604,14 @@ export type Database = {
           address_1: string | null
           address_2: string | null
           attendance_tracking_system: Json | null
+          attestation_signature: string | null
           car_failure_to_report: string | null
           car_immediately_report: string | null
+          care_location_address_1: string | null
+          care_location_address_2: string | null
+          care_location_city: string | null
+          care_location_state: string | null
+          care_location_zip: string | null
           care_setting: string | null
           ccpr_activities: string | null
           ccpr_materials_and_equipment: string | null
@@ -418,7 +621,7 @@ export type Database = {
           children_under_2: number | null
           city: string | null
           cpr_certified: string | null
-          cpr_upload: string | null
+          cpr_upload: string[] | null
           created_at: string
           email: string | null
           first_name: string | null
@@ -436,15 +639,10 @@ export type Database = {
           id: number
           last_name: string | null
           last_update_date: string | null
-          license_address_1: string | null
-          license_address_2: string | null
-          license_city: string | null
           license_name: string | null
           license_number: string | null
-          license_state: string | null
           license_type: string | null
-          license_zip: string | null
-          licensed: string | null
+          licensed: boolean | null
           link_id: string | null
           "monthly_rate_0-18": string | null
           "monthly_rate_19-36": string | null
@@ -455,29 +653,31 @@ export type Database = {
           pay_types: Json | null
           phone: string | null
           preferred_language: string | null
-          related_to_all_children: string | null
+          referrer_cap_family: string | null
+          related_to_all_children: boolean | null
           related_to_relationship: string | null
           related_to_some_children: boolean | null
           satisfaction_current_experience: string | null
           satisfaction_current_experience_explanation: string | null
           satisfaction_current_pay: string | null
           signature: string | null
-          ssn_or_itin: string | null
+          ssn_or_itin: boolean | null
           state: string | null
           submission_date: string | null
           submission_edit_url: string | null
+          submission_id: string | null
           submission_ip: string | null
           submission_url: string | null
-          tc_accurate_and_truthful: string | null
-          tc_asked_questions: string | null
-          tc_background_check: string | null
-          tc_privacy_policy: string | null
-          tc_read_form: string | null
-          tc_tcpa: string | null
-          tc_voluntary_participation: string | null
+          tc_accurate_and_truthful: boolean | null
+          tc_asked_questions: boolean | null
+          tc_background_check: boolean | null
+          tc_privacy_policy: boolean | null
+          tc_read_form: boolean | null
+          tc_tcpa: boolean | null
+          tc_terms_and_conditions: boolean | null
+          tc_voluntary_participation: boolean | null
           time_tracker: string | null
-          typeA131: string | null
-          w9: string | null
+          w9: string[] | null
           when_families_pay: string | null
           zip: string | null
         }
@@ -486,8 +686,14 @@ export type Database = {
           address_1?: string | null
           address_2?: string | null
           attendance_tracking_system?: Json | null
+          attestation_signature?: string | null
           car_failure_to_report?: string | null
           car_immediately_report?: string | null
+          care_location_address_1?: string | null
+          care_location_address_2?: string | null
+          care_location_city?: string | null
+          care_location_state?: string | null
+          care_location_zip?: string | null
           care_setting?: string | null
           ccpr_activities?: string | null
           ccpr_materials_and_equipment?: string | null
@@ -497,7 +703,7 @@ export type Database = {
           children_under_2?: number | null
           city?: string | null
           cpr_certified?: string | null
-          cpr_upload?: string | null
+          cpr_upload?: string[] | null
           created_at?: string
           email?: string | null
           first_name?: string | null
@@ -515,15 +721,10 @@ export type Database = {
           id?: number
           last_name?: string | null
           last_update_date?: string | null
-          license_address_1?: string | null
-          license_address_2?: string | null
-          license_city?: string | null
           license_name?: string | null
           license_number?: string | null
-          license_state?: string | null
           license_type?: string | null
-          license_zip?: string | null
-          licensed?: string | null
+          licensed?: boolean | null
           link_id?: string | null
           "monthly_rate_0-18"?: string | null
           "monthly_rate_19-36"?: string | null
@@ -534,29 +735,31 @@ export type Database = {
           pay_types?: Json | null
           phone?: string | null
           preferred_language?: string | null
-          related_to_all_children?: string | null
+          referrer_cap_family?: string | null
+          related_to_all_children?: boolean | null
           related_to_relationship?: string | null
           related_to_some_children?: boolean | null
           satisfaction_current_experience?: string | null
           satisfaction_current_experience_explanation?: string | null
           satisfaction_current_pay?: string | null
           signature?: string | null
-          ssn_or_itin?: string | null
+          ssn_or_itin?: boolean | null
           state?: string | null
           submission_date?: string | null
           submission_edit_url?: string | null
+          submission_id?: string | null
           submission_ip?: string | null
           submission_url?: string | null
-          tc_accurate_and_truthful?: string | null
-          tc_asked_questions?: string | null
-          tc_background_check?: string | null
-          tc_privacy_policy?: string | null
-          tc_read_form?: string | null
-          tc_tcpa?: string | null
-          tc_voluntary_participation?: string | null
+          tc_accurate_and_truthful?: boolean | null
+          tc_asked_questions?: boolean | null
+          tc_background_check?: boolean | null
+          tc_privacy_policy?: boolean | null
+          tc_read_form?: boolean | null
+          tc_tcpa?: boolean | null
+          tc_terms_and_conditions?: boolean | null
+          tc_voluntary_participation?: boolean | null
           time_tracker?: string | null
-          typeA131?: string | null
-          w9?: string | null
+          w9?: string[] | null
           when_families_pay?: string | null
           zip?: string | null
         }
@@ -565,8 +768,14 @@ export type Database = {
           address_1?: string | null
           address_2?: string | null
           attendance_tracking_system?: Json | null
+          attestation_signature?: string | null
           car_failure_to_report?: string | null
           car_immediately_report?: string | null
+          care_location_address_1?: string | null
+          care_location_address_2?: string | null
+          care_location_city?: string | null
+          care_location_state?: string | null
+          care_location_zip?: string | null
           care_setting?: string | null
           ccpr_activities?: string | null
           ccpr_materials_and_equipment?: string | null
@@ -576,7 +785,7 @@ export type Database = {
           children_under_2?: number | null
           city?: string | null
           cpr_certified?: string | null
-          cpr_upload?: string | null
+          cpr_upload?: string[] | null
           created_at?: string
           email?: string | null
           first_name?: string | null
@@ -594,15 +803,10 @@ export type Database = {
           id?: number
           last_name?: string | null
           last_update_date?: string | null
-          license_address_1?: string | null
-          license_address_2?: string | null
-          license_city?: string | null
           license_name?: string | null
           license_number?: string | null
-          license_state?: string | null
           license_type?: string | null
-          license_zip?: string | null
-          licensed?: string | null
+          licensed?: boolean | null
           link_id?: string | null
           "monthly_rate_0-18"?: string | null
           "monthly_rate_19-36"?: string | null
@@ -613,31 +817,72 @@ export type Database = {
           pay_types?: Json | null
           phone?: string | null
           preferred_language?: string | null
-          related_to_all_children?: string | null
+          referrer_cap_family?: string | null
+          related_to_all_children?: boolean | null
           related_to_relationship?: string | null
           related_to_some_children?: boolean | null
           satisfaction_current_experience?: string | null
           satisfaction_current_experience_explanation?: string | null
           satisfaction_current_pay?: string | null
           signature?: string | null
-          ssn_or_itin?: string | null
+          ssn_or_itin?: boolean | null
           state?: string | null
           submission_date?: string | null
           submission_edit_url?: string | null
+          submission_id?: string | null
           submission_ip?: string | null
           submission_url?: string | null
-          tc_accurate_and_truthful?: string | null
-          tc_asked_questions?: string | null
-          tc_background_check?: string | null
-          tc_privacy_policy?: string | null
-          tc_read_form?: string | null
-          tc_tcpa?: string | null
-          tc_voluntary_participation?: string | null
+          tc_accurate_and_truthful?: boolean | null
+          tc_asked_questions?: boolean | null
+          tc_background_check?: boolean | null
+          tc_privacy_policy?: boolean | null
+          tc_read_form?: boolean | null
+          tc_tcpa?: boolean | null
+          tc_terms_and_conditions?: boolean | null
+          tc_voluntary_participation?: boolean | null
           time_tracker?: string | null
-          typeA131?: string | null
-          w9?: string | null
+          w9?: string[] | null
           when_families_pay?: string | null
           zip?: string | null
+        }
+        Relationships: []
+      }
+      provider_invitation: {
+        Row: {
+          accepted: boolean | null
+          child_google_sheet_id: number | null
+          created_at: string
+          email_sent: boolean | null
+          id: number
+          invite_email: string | null
+          opened_at: string | null
+          public_id: string | null
+          sms_sent: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          accepted?: boolean | null
+          child_google_sheet_id?: number | null
+          created_at?: string
+          email_sent?: boolean | null
+          id?: number
+          invite_email?: string | null
+          opened_at?: string | null
+          public_id?: string | null
+          sms_sent?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          accepted?: boolean | null
+          child_google_sheet_id?: number | null
+          created_at?: string
+          email_sent?: boolean | null
+          id?: number
+          invite_email?: string | null
+          opened_at?: string | null
+          public_id?: string | null
+          sms_sent?: boolean | null
+          updated_at?: string | null
         }
         Relationships: []
       }
