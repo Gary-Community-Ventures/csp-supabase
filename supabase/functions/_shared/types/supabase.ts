@@ -81,39 +81,69 @@ export type Database = {
       }
       child: {
         Row: {
+          balance: number | null
           created_at: string
           dob: string | null
           family_id: number | null
           first_name: string | null
+          guardian_name: string | null
           id: number
           last_name: string | null
           middle_name: string | null
+          monthly_allocation: number
+          payment_enabled: boolean
+          prorated_allocation: number
+          provider_name: string | null
+          status: Database["public"]["Enums"]["Status"]
         }
         Insert: {
+          balance?: number | null
           created_at?: string
           dob?: string | null
           family_id?: number | null
           first_name?: string | null
+          guardian_name?: string | null
           id?: number
           last_name?: string | null
           middle_name?: string | null
+          monthly_allocation?: number
+          payment_enabled?: boolean
+          prorated_allocation?: number
+          provider_name?: string | null
+          status?: Database["public"]["Enums"]["Status"]
         }
         Update: {
+          balance?: number | null
           created_at?: string
           dob?: string | null
           family_id?: number | null
           first_name?: string | null
+          guardian_name?: string | null
           id?: number
           last_name?: string | null
           middle_name?: string | null
+          monthly_allocation?: number
+          payment_enabled?: boolean
+          prorated_allocation?: number
+          provider_name?: string | null
+          status?: Database["public"]["Enums"]["Status"]
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "child_family_id_fkey"
+            columns: ["family_id"]
+            isOneToOne: false
+            referencedRelation: "family"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       family: {
         Row: {
           approved: string | null
           created_at: string
           id: number
+          language: string
           referred_by: string | null
           size: number | null
           yearly_income: number | null
@@ -123,6 +153,7 @@ export type Database = {
           approved?: string | null
           created_at?: string
           id?: number
+          language: string
           referred_by?: string | null
           size?: number | null
           yearly_income?: number | null
@@ -132,6 +163,7 @@ export type Database = {
           approved?: string | null
           created_at?: string
           id?: number
+          language?: string
           referred_by?: string | null
           size?: number | null
           yearly_income?: number | null
@@ -147,6 +179,8 @@ export type Database = {
           address_1_primary: string | null
           address_2_additional: string | null
           address_2_primary: string | null
+          approved: boolean | null
+          approved_at: string | null
           assets_one_million: boolean | null
           child_care_length_additional: string | null
           child_care_length_primary: string | null
@@ -216,7 +250,10 @@ export type Database = {
           tc_TCPA: boolean | null
           tc_terms_and_conditions: boolean | null
           timer: string | null
+          truv_id_additional: string | null
+          truv_id_primary: string | null
           verification_child_age: string[] | null
+          why_need_child_care: Json | null
           zip_additional: string | null
           zip_primary: string | null
         }
@@ -227,6 +264,8 @@ export type Database = {
           address_1_primary?: string | null
           address_2_additional?: string | null
           address_2_primary?: string | null
+          approved?: boolean | null
+          approved_at?: string | null
           assets_one_million?: boolean | null
           child_care_length_additional?: string | null
           child_care_length_primary?: string | null
@@ -296,7 +335,10 @@ export type Database = {
           tc_TCPA?: boolean | null
           tc_terms_and_conditions?: boolean | null
           timer?: string | null
+          truv_id_additional?: string | null
+          truv_id_primary?: string | null
           verification_child_age?: string[] | null
+          why_need_child_care?: Json | null
           zip_additional?: string | null
           zip_primary?: string | null
         }
@@ -307,6 +349,8 @@ export type Database = {
           address_1_primary?: string | null
           address_2_additional?: string | null
           address_2_primary?: string | null
+          approved?: boolean | null
+          approved_at?: string | null
           assets_one_million?: boolean | null
           child_care_length_additional?: string | null
           child_care_length_primary?: string | null
@@ -376,7 +420,10 @@ export type Database = {
           tc_TCPA?: boolean | null
           tc_terms_and_conditions?: boolean | null
           timer?: string | null
+          truv_id_additional?: string | null
+          truv_id_primary?: string | null
           verification_child_age?: string[] | null
+          why_need_child_care?: Json | null
           zip_additional?: string | null
           zip_primary?: string | null
         }
@@ -431,6 +478,7 @@ export type Database = {
           family_id: number | null
           first_name: string | null
           id: number
+          is_primary: boolean
           last_name: string | null
           phone_number: string | null
           state: string | null
@@ -446,6 +494,7 @@ export type Database = {
           family_id?: number | null
           first_name?: string | null
           id?: number
+          is_primary?: boolean
           last_name?: string | null
           phone_number?: string | null
           state?: string | null
@@ -461,13 +510,22 @@ export type Database = {
           family_id?: number | null
           first_name?: string | null
           id?: number
+          is_primary?: boolean
           last_name?: string | null
           phone_number?: string | null
           state?: string | null
           type?: string | null
           zip?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "guardian_family_id_fkey"
+            columns: ["family_id"]
+            isOneToOne: false
+            referencedRelation: "family"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       monthly_allocation: {
         Row: {
@@ -561,39 +619,159 @@ export type Database = {
       }
       provider: {
         Row: {
+          accepted_forms_of_payment: Json | null
           address_1: string | null
           address_2: string | null
-          approved: string | null
+          attendance_tracking_system: Json | null
+          care_location_address_1: string | null
+          care_location_address_2: string | null
+          care_location_city: string | null
+          care_location_state: string | null
+          care_location_zip: string | null
+          care_setting: string | null
+          children_under_2: number | null
           city: string | null
+          cpr_certified: string | null
+          cpr_upload: string[] | null
           created_at: string
+          email: string | null
+          first_name: string | null
           id: number
+          language: Database["public"]["Enums"]["Language"]
+          last_name: string | null
+          license_name: string | null
+          license_number: string | null
+          license_type: string | null
+          licensed: boolean | null
+          link_id: string | null
+          "monthly_rate_0-18": string | null
+          "monthly_rate_19-36": string | null
           name: string | null
+          number_of_children: number | null
+          other_adults: Json | null
+          pay_per_month: number | null
+          pay_rate: string | null
+          pay_types: Json | null
+          payment_enabled: boolean
+          phone: string | null
+          preferred_language: string | null
+          referrer_cap_family: string | null
+          related_to_all_children: boolean | null
+          related_to_relationship: string | null
+          related_to_some_children: boolean | null
+          satisfaction_current_experience: string | null
+          satisfaction_current_experience_explanation: string | null
+          satisfaction_current_pay: string | null
+          ssn_or_itin: boolean | null
           state: string | null
-          type: string | null
+          status: Database["public"]["Enums"]["Status"]
+          type: Database["public"]["Enums"]["Provider Type"] | null
+          w9: string[] | null
+          when_families_pay: string | null
           zip: string | null
         }
         Insert: {
+          accepted_forms_of_payment?: Json | null
           address_1?: string | null
           address_2?: string | null
-          approved?: string | null
+          attendance_tracking_system?: Json | null
+          care_location_address_1?: string | null
+          care_location_address_2?: string | null
+          care_location_city?: string | null
+          care_location_state?: string | null
+          care_location_zip?: string | null
+          care_setting?: string | null
+          children_under_2?: number | null
           city?: string | null
+          cpr_certified?: string | null
+          cpr_upload?: string[] | null
           created_at?: string
+          email?: string | null
+          first_name?: string | null
           id?: number
+          language?: Database["public"]["Enums"]["Language"]
+          last_name?: string | null
+          license_name?: string | null
+          license_number?: string | null
+          license_type?: string | null
+          licensed?: boolean | null
+          link_id?: string | null
+          "monthly_rate_0-18"?: string | null
+          "monthly_rate_19-36"?: string | null
           name?: string | null
+          number_of_children?: number | null
+          other_adults?: Json | null
+          pay_per_month?: number | null
+          pay_rate?: string | null
+          pay_types?: Json | null
+          payment_enabled?: boolean
+          phone?: string | null
+          preferred_language?: string | null
+          referrer_cap_family?: string | null
+          related_to_all_children?: boolean | null
+          related_to_relationship?: string | null
+          related_to_some_children?: boolean | null
+          satisfaction_current_experience?: string | null
+          satisfaction_current_experience_explanation?: string | null
+          satisfaction_current_pay?: string | null
+          ssn_or_itin?: boolean | null
           state?: string | null
-          type?: string | null
+          status?: Database["public"]["Enums"]["Status"]
+          type?: Database["public"]["Enums"]["Provider Type"] | null
+          w9?: string[] | null
+          when_families_pay?: string | null
           zip?: string | null
         }
         Update: {
+          accepted_forms_of_payment?: Json | null
           address_1?: string | null
           address_2?: string | null
-          approved?: string | null
+          attendance_tracking_system?: Json | null
+          care_location_address_1?: string | null
+          care_location_address_2?: string | null
+          care_location_city?: string | null
+          care_location_state?: string | null
+          care_location_zip?: string | null
+          care_setting?: string | null
+          children_under_2?: number | null
           city?: string | null
+          cpr_certified?: string | null
+          cpr_upload?: string[] | null
           created_at?: string
+          email?: string | null
+          first_name?: string | null
           id?: number
+          language?: Database["public"]["Enums"]["Language"]
+          last_name?: string | null
+          license_name?: string | null
+          license_number?: string | null
+          license_type?: string | null
+          licensed?: boolean | null
+          link_id?: string | null
+          "monthly_rate_0-18"?: string | null
+          "monthly_rate_19-36"?: string | null
           name?: string | null
+          number_of_children?: number | null
+          other_adults?: Json | null
+          pay_per_month?: number | null
+          pay_rate?: string | null
+          pay_types?: Json | null
+          payment_enabled?: boolean
+          phone?: string | null
+          preferred_language?: string | null
+          referrer_cap_family?: string | null
+          related_to_all_children?: boolean | null
+          related_to_relationship?: string | null
+          related_to_some_children?: boolean | null
+          satisfaction_current_experience?: string | null
+          satisfaction_current_experience_explanation?: string | null
+          satisfaction_current_pay?: string | null
+          ssn_or_itin?: boolean | null
           state?: string | null
-          type?: string | null
+          status?: Database["public"]["Enums"]["Status"]
+          type?: Database["public"]["Enums"]["Provider Type"] | null
+          w9?: string[] | null
+          when_families_pay?: string | null
           zip?: string | null
         }
         Relationships: []
@@ -603,6 +781,8 @@ export type Database = {
           accepted_forms_of_payment: Json | null
           address_1: string | null
           address_2: string | null
+          approved: boolean | null
+          approved_at: string | null
           attendance_tracking_system: Json | null
           attestation_signature: string | null
           car_failure_to_report: string | null
@@ -685,6 +865,8 @@ export type Database = {
           accepted_forms_of_payment?: Json | null
           address_1?: string | null
           address_2?: string | null
+          approved?: boolean | null
+          approved_at?: string | null
           attendance_tracking_system?: Json | null
           attestation_signature?: string | null
           car_failure_to_report?: string | null
@@ -767,6 +949,8 @@ export type Database = {
           accepted_forms_of_payment?: Json | null
           address_1?: string | null
           address_2?: string | null
+          approved?: boolean | null
+          approved_at?: string | null
           attendance_tracking_system?: Json | null
           attestation_signature?: string | null
           car_failure_to_report?: string | null
@@ -847,6 +1031,141 @@ export type Database = {
         }
         Relationships: []
       }
+      provider_approval: {
+        Row: {
+          application_approved_at: string | null
+          application_reviewed_at: string | null
+          application_submitted_at: string
+          attestation_signature: string | null
+          background_check_needed: boolean | null
+          background_check_passed_at: string | null
+          background_check_submitted_at: string | null
+          cpr_training_completed_at: string | null
+          cpr_training_required: boolean | null
+          cpr_upload: string[] | null
+          first_payment_received_at: string | null
+          id: number
+          notes: string | null
+          onboarding_call_at: string | null
+          post_payment_survey_sent: string | null
+          provider_care_setting: string | null
+          provider_email: string | null
+          provider_name: string | null
+          provider_phone: string | null
+          ready_to_approve: boolean | null
+          red_cross_code: string | null
+          safety_attestation_completed_at: string | null
+          safety_attestation_needed: boolean | null
+          status: Database["public"]["Enums"]["Status"] | null
+          submission_id: string | null
+          usio_account_created_at: string | null
+          w9: string[] | null
+          w9_approved_at: string | null
+          w9_needed: boolean | null
+          w9_submitted_at: string | null
+        }
+        Insert: {
+          application_approved_at?: string | null
+          application_reviewed_at?: string | null
+          application_submitted_at: string
+          attestation_signature?: string | null
+          background_check_needed?: boolean | null
+          background_check_passed_at?: string | null
+          background_check_submitted_at?: string | null
+          cpr_training_completed_at?: string | null
+          cpr_training_required?: boolean | null
+          cpr_upload?: string[] | null
+          first_payment_received_at?: string | null
+          id?: number
+          notes?: string | null
+          onboarding_call_at?: string | null
+          post_payment_survey_sent?: string | null
+          provider_care_setting?: string | null
+          provider_email?: string | null
+          provider_name?: string | null
+          provider_phone?: string | null
+          ready_to_approve?: boolean | null
+          red_cross_code?: string | null
+          safety_attestation_completed_at?: string | null
+          safety_attestation_needed?: boolean | null
+          status?: Database["public"]["Enums"]["Status"] | null
+          submission_id?: string | null
+          usio_account_created_at?: string | null
+          w9?: string[] | null
+          w9_approved_at?: string | null
+          w9_needed?: boolean | null
+          w9_submitted_at?: string | null
+        }
+        Update: {
+          application_approved_at?: string | null
+          application_reviewed_at?: string | null
+          application_submitted_at?: string
+          attestation_signature?: string | null
+          background_check_needed?: boolean | null
+          background_check_passed_at?: string | null
+          background_check_submitted_at?: string | null
+          cpr_training_completed_at?: string | null
+          cpr_training_required?: boolean | null
+          cpr_upload?: string[] | null
+          first_payment_received_at?: string | null
+          id?: number
+          notes?: string | null
+          onboarding_call_at?: string | null
+          post_payment_survey_sent?: string | null
+          provider_care_setting?: string | null
+          provider_email?: string | null
+          provider_name?: string | null
+          provider_phone?: string | null
+          ready_to_approve?: boolean | null
+          red_cross_code?: string | null
+          safety_attestation_completed_at?: string | null
+          safety_attestation_needed?: boolean | null
+          status?: Database["public"]["Enums"]["Status"] | null
+          submission_id?: string | null
+          usio_account_created_at?: string | null
+          w9?: string[] | null
+          w9_approved_at?: string | null
+          w9_needed?: boolean | null
+          w9_submitted_at?: string | null
+        }
+        Relationships: []
+      }
+      provider_child_mapping: {
+        Row: {
+          child_id: number
+          created_at: string
+          id: number
+          provider_id: number
+        }
+        Insert: {
+          child_id: number
+          created_at?: string
+          id?: number
+          provider_id: number
+        }
+        Update: {
+          child_id?: number
+          created_at?: string
+          id?: number
+          provider_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "provider_child_mapping_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "child"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "provider_child_mapping_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "provider"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       provider_invitation: {
         Row: {
           accepted: boolean | null
@@ -894,7 +1213,9 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      Language: "en" | "es"
+      "Provider Type": "ffn" | "center" | "lhb"
+      Status: "Approved" | "Denied" | "Pending" | "Hold"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1021,6 +1342,10 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      Language: ["en", "es"],
+      "Provider Type": ["ffn", "center", "lhb"],
+      Status: ["Approved", "Denied", "Pending", "Hold"],
+    },
   },
 } as const

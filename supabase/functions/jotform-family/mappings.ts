@@ -29,6 +29,7 @@ const addressObject = isObject([
 
 export const M = {
   linkId: new Mapping("q176_link_id", stringOrNullParser, isString),
+  timer: new Mapping("q172_time_tracker", stringOrNullParser, isString),
   selectedLanguage: new Mapping("input_language", noChangeParser, isString),
   providerName: new Mapping("q178_pleaseEnter178", noChangeParser, isString),
   primaryGuardian: {

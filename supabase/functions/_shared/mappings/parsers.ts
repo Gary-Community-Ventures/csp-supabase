@@ -22,15 +22,7 @@ export function acceptParser(value: string): boolean | null {
     return null;
   }
 
-  return value === "Accept";
-}
-
-export function acceptedParser(value: string): boolean | null {
-  if (value === "") {
-    return null;
-  }
-
-  return value === "Accepted";
+  return ["accept", "accepted"].includes(value.toLowerCase());
 }
 
 export function numberOrNullParser(value: string): number | null {

@@ -26,3 +26,6 @@ dist/
 dump.json
 family_dump.json
 provider_dump.json
+
+# Environment variables
+.env
