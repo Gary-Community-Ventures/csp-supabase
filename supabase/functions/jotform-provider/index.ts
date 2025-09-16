@@ -142,7 +142,7 @@ Deno.serve(async (req) => {
       time_tracker: M.timeTracker.get(jsonData),
       link_id: M.linkId.get(jsonData),
       submission_ip: jotformData.ip,
-      submission_date: jotformData.created_at,
+      application_submitted_at: jotformData.created_at,
       last_update_date: jotformData.updated_at,
       attestation_signature: jotformData.answers[119].answer,
       signature: jotformData.answers[131].answer,
