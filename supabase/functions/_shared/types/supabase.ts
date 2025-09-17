@@ -81,7 +81,6 @@ export type Database = {
       }
       child: {
         Row: {
-          balance: number | null
           created_at: string
           dob: string | null
           family_id: number | null
@@ -100,7 +99,6 @@ export type Database = {
           wishlist: boolean | null
         }
         Insert: {
-          balance?: number | null
           created_at?: string
           dob?: string | null
           family_id?: number | null
@@ -119,7 +117,6 @@ export type Database = {
           wishlist?: boolean | null
         }
         Update: {
-          balance?: number | null
           created_at?: string
           dob?: string | null
           family_id?: number | null
@@ -201,6 +198,8 @@ export type Database = {
           child_care_length_primary: string | null
           child_current_care_additional: Json | null
           child_current_care_primary: Json | null
+          child_disabled_additional: boolean | null
+          child_disabled_primary: boolean | null
           child_dob_additional: string | null
           child_dob_primary: string | null
           child_first_name_additional: string | null
@@ -241,10 +240,12 @@ export type Database = {
           last_name_primary: string | null
           last_update_date: string | null
           link_id: string | null
+          other_income_earners: Json | null
           phone_additional: string | null
           phone_primary: string | null
           photo_release: boolean | null
           preferred_language: string | null
+          primary_has_income: boolean | null
           proof_of_income: string[] | null
           proof_of_residence: string[] | null
           race_ethnicity_additional: Json | null
@@ -260,6 +261,7 @@ export type Database = {
           submitted_at: string | null
           tc_change_providers: boolean | null
           tc_dependent_on_CAP_approval: boolean | null
+          tc_income_verification: boolean | null
           tc_privacy_policy: boolean | null
           tc_responsible_for_finding_care: boolean | null
           tc_TCPA: boolean | null
@@ -267,6 +269,7 @@ export type Database = {
           timer: string | null
           truv_id_additional: string | null
           truv_id_primary: string | null
+          truv_ids: string[] | null
           verification_child_age: string[] | null
           waitlist: boolean | null
           why_need_child_care: Json | null
@@ -287,6 +290,8 @@ export type Database = {
           child_care_length_primary?: string | null
           child_current_care_additional?: Json | null
           child_current_care_primary?: Json | null
+          child_disabled_additional?: boolean | null
+          child_disabled_primary?: boolean | null
           child_dob_additional?: string | null
           child_dob_primary?: string | null
           child_first_name_additional?: string | null
@@ -327,10 +332,12 @@ export type Database = {
           last_name_primary?: string | null
           last_update_date?: string | null
           link_id?: string | null
+          other_income_earners?: Json | null
           phone_additional?: string | null
           phone_primary?: string | null
           photo_release?: boolean | null
           preferred_language?: string | null
+          primary_has_income?: boolean | null
           proof_of_income?: string[] | null
           proof_of_residence?: string[] | null
           race_ethnicity_additional?: Json | null
@@ -346,6 +353,7 @@ export type Database = {
           submitted_at?: string | null
           tc_change_providers?: boolean | null
           tc_dependent_on_CAP_approval?: boolean | null
+          tc_income_verification?: boolean | null
           tc_privacy_policy?: boolean | null
           tc_responsible_for_finding_care?: boolean | null
           tc_TCPA?: boolean | null
@@ -353,6 +361,7 @@ export type Database = {
           timer?: string | null
           truv_id_additional?: string | null
           truv_id_primary?: string | null
+          truv_ids?: string[] | null
           verification_child_age?: string[] | null
           waitlist?: boolean | null
           why_need_child_care?: Json | null
@@ -373,6 +382,8 @@ export type Database = {
           child_care_length_primary?: string | null
           child_current_care_additional?: Json | null
           child_current_care_primary?: Json | null
+          child_disabled_additional?: boolean | null
+          child_disabled_primary?: boolean | null
           child_dob_additional?: string | null
           child_dob_primary?: string | null
           child_first_name_additional?: string | null
@@ -413,10 +424,12 @@ export type Database = {
           last_name_primary?: string | null
           last_update_date?: string | null
           link_id?: string | null
+          other_income_earners?: Json | null
           phone_additional?: string | null
           phone_primary?: string | null
           photo_release?: boolean | null
           preferred_language?: string | null
+          primary_has_income?: boolean | null
           proof_of_income?: string[] | null
           proof_of_residence?: string[] | null
           race_ethnicity_additional?: Json | null
@@ -432,6 +445,7 @@ export type Database = {
           submitted_at?: string | null
           tc_change_providers?: boolean | null
           tc_dependent_on_CAP_approval?: boolean | null
+          tc_income_verification?: boolean | null
           tc_privacy_policy?: boolean | null
           tc_responsible_for_finding_care?: boolean | null
           tc_TCPA?: boolean | null
@@ -439,6 +453,7 @@ export type Database = {
           timer?: string | null
           truv_id_additional?: string | null
           truv_id_primary?: string | null
+          truv_ids?: string[] | null
           verification_child_age?: string[] | null
           waitlist?: boolean | null
           why_need_child_care?: Json | null
@@ -456,8 +471,6 @@ export type Database = {
           "current_benefits_pre-eligibility": Json | null
           current_benefits_proof: string[] | null
           current_benefits_qualified: boolean | null
-          current_childcare_benefits: Json | null
-          current_childcare_benefits_qualified: boolean | null
           first_name_primary: string | null
           fpl_350_yearly_2025: number | null
           household_size: number | null
@@ -465,7 +478,11 @@ export type Database = {
           income_qualified: boolean | null
           income_yearly: number | null
           last_name_primary: string | null
+          no_current_childcare_benefits: Json | null
+          no_current_childcare_benefits_qualified: boolean | null
+          notes: string | null
           proof_of_income: string | null
+          ready_to_approve: boolean | null
           ruca_area_type: string | null
           state_additional: string | null
           state_primary: string | null
@@ -473,7 +490,6 @@ export type Database = {
           status: Database["public"]["Enums"]["Status"] | null
           submission_id: string | null
           submitted_at: string | null
-          waitlist: boolean | null
           zip_additional: string | null
           zip_primary: string | null
         }
@@ -485,8 +501,6 @@ export type Database = {
           "current_benefits_pre-eligibility"?: Json | null
           current_benefits_proof?: string[] | null
           current_benefits_qualified?: boolean | null
-          current_childcare_benefits?: Json | null
-          current_childcare_benefits_qualified?: boolean | null
           first_name_primary?: string | null
           fpl_350_yearly_2025?: number | null
           household_size?: number | null
@@ -494,7 +508,11 @@ export type Database = {
           income_qualified?: boolean | null
           income_yearly?: number | null
           last_name_primary?: string | null
+          no_current_childcare_benefits?: Json | null
+          no_current_childcare_benefits_qualified?: boolean | null
+          notes?: string | null
           proof_of_income?: string | null
+          ready_to_approve?: boolean | null
           ruca_area_type?: string | null
           state_additional?: string | null
           state_primary?: string | null
@@ -502,7 +520,6 @@ export type Database = {
           status?: Database["public"]["Enums"]["Status"] | null
           submission_id?: string | null
           submitted_at?: string | null
-          waitlist?: boolean | null
           zip_additional?: string | null
           zip_primary?: string | null
         }
@@ -514,8 +531,6 @@ export type Database = {
           "current_benefits_pre-eligibility"?: Json | null
           current_benefits_proof?: string[] | null
           current_benefits_qualified?: boolean | null
-          current_childcare_benefits?: Json | null
-          current_childcare_benefits_qualified?: boolean | null
           first_name_primary?: string | null
           fpl_350_yearly_2025?: number | null
           household_size?: number | null
@@ -523,7 +538,11 @@ export type Database = {
           income_qualified?: boolean | null
           income_yearly?: number | null
           last_name_primary?: string | null
+          no_current_childcare_benefits?: Json | null
+          no_current_childcare_benefits_qualified?: boolean | null
+          notes?: string | null
           proof_of_income?: string | null
+          ready_to_approve?: boolean | null
           ruca_area_type?: string | null
           state_additional?: string | null
           state_primary?: string | null
@@ -531,7 +550,6 @@ export type Database = {
           status?: Database["public"]["Enums"]["Status"] | null
           submission_id?: string | null
           submitted_at?: string | null
-          waitlist?: boolean | null
           zip_additional?: string | null
           zip_primary?: string | null
         }
@@ -763,13 +781,17 @@ export type Database = {
           care_location_state: string | null
           care_location_zip: string | null
           care_setting: string | null
+          child_safety_module_training_completed_at: string | null
           children_under_2: number | null
           city: string | null
           cpr_certified: string | null
+          cpr_online_training_completed_at: string | null
+          cpr_training_link: string | null
           cpr_upload: string[] | null
           created_at: string
           email: string | null
           first_name: string | null
+          home_safety_and_injury_prevention_training_completed_at: string | null
           id: number
           language: Database["public"]["Enums"]["Language"]
           last_name: string | null
@@ -793,6 +815,7 @@ export type Database = {
           related_to_all_children: boolean | null
           related_to_relationship: string | null
           related_to_some_children: boolean | null
+          safe_sleep_for_infants_training_completed_at: string | null
           satisfaction_current_experience: string | null
           satisfaction_current_experience_explanation: string | null
           satisfaction_current_pay: string | null
@@ -818,13 +841,19 @@ export type Database = {
           care_location_state?: string | null
           care_location_zip?: string | null
           care_setting?: string | null
+          child_safety_module_training_completed_at?: string | null
           children_under_2?: number | null
           city?: string | null
           cpr_certified?: string | null
+          cpr_online_training_completed_at?: string | null
+          cpr_training_link?: string | null
           cpr_upload?: string[] | null
           created_at?: string
           email?: string | null
           first_name?: string | null
+          home_safety_and_injury_prevention_training_completed_at?:
+            | string
+            | null
           id?: number
           language?: Database["public"]["Enums"]["Language"]
           last_name?: string | null
@@ -848,6 +877,7 @@ export type Database = {
           related_to_all_children?: boolean | null
           related_to_relationship?: string | null
           related_to_some_children?: boolean | null
+          safe_sleep_for_infants_training_completed_at?: string | null
           satisfaction_current_experience?: string | null
           satisfaction_current_experience_explanation?: string | null
           satisfaction_current_pay?: string | null
@@ -873,13 +903,19 @@ export type Database = {
           care_location_state?: string | null
           care_location_zip?: string | null
           care_setting?: string | null
+          child_safety_module_training_completed_at?: string | null
           children_under_2?: number | null
           city?: string | null
           cpr_certified?: string | null
+          cpr_online_training_completed_at?: string | null
+          cpr_training_link?: string | null
           cpr_upload?: string[] | null
           created_at?: string
           email?: string | null
           first_name?: string | null
+          home_safety_and_injury_prevention_training_completed_at?:
+            | string
+            | null
           id?: number
           language?: Database["public"]["Enums"]["Language"]
           last_name?: string | null
@@ -903,6 +939,7 @@ export type Database = {
           related_to_all_children?: boolean | null
           related_to_relationship?: string | null
           related_to_some_children?: boolean | null
+          safe_sleep_for_infants_training_completed_at?: string | null
           satisfaction_current_experience?: string | null
           satisfaction_current_experience_explanation?: string | null
           satisfaction_current_pay?: string | null
@@ -1198,7 +1235,6 @@ export type Database = {
           w9_approved_at: string | null
           w9_needed: boolean | null
           w9_submitted_at: string | null
-          waitlist: boolean | null
         }
         Insert: {
           application_approved_at?: string | null
@@ -1231,7 +1267,6 @@ export type Database = {
           w9_approved_at?: string | null
           w9_needed?: boolean | null
           w9_submitted_at?: string | null
-          waitlist?: boolean | null
         }
         Update: {
           application_approved_at?: string | null
@@ -1264,7 +1299,6 @@ export type Database = {
           w9_approved_at?: string | null
           w9_needed?: boolean | null
           w9_submitted_at?: string | null
-          waitlist?: boolean | null
         }
         Relationships: []
       }
@@ -1425,7 +1459,13 @@ export type Database = {
     Enums: {
       Language: "en" | "es"
       "Provider Type": "ffn" | "center" | "lhb"
-      Status: "Approved" | "Not Eligible" | "Pending" | "Hold" | "Duplicate"
+      Status:
+        | "Approved"
+        | "Not Eligible"
+        | "Pending"
+        | "Hold"
+        | "Duplicate"
+        | "Waitlist"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1555,7 +1595,14 @@ export const Constants = {
     Enums: {
       Language: ["en", "es"],
       "Provider Type": ["ffn", "center", "lhb"],
-      Status: ["Approved", "Not Eligible", "Pending", "Hold", "Duplicate"],
+      Status: [
+        "Approved",
+        "Not Eligible",
+        "Pending",
+        "Hold",
+        "Duplicate",
+        "Waitlist",
+      ],
     },
   },
 } as const

@@ -69,12 +69,13 @@ Deno.serve(async (req) => {
 
     const primaryName = M.primaryGuardian.name.get(jsonData);
     const primaryAddress = M.primaryGuardian.address.get(jsonData);
-    const secondaryName = M.secondaryGuardian.name.get(jsonData);
-    const secondaryAddress = M.secondaryGuardian.address.get(jsonData);
+    // NOTE: Deprecated
+    // const secondaryName = M.secondaryGuardian.name.get(jsonData);
+    // const secondaryAddress = M.secondaryGuardian.address.get(jsonData);
     const firstChildName = M.firstChild.name.get(jsonData);
     const secondChildName = M.secondChild.name.get(jsonData);
 
-    const { data: supabaseResponse, error } = await supabase
+    const { data: supabaseData, error } = await supabase
       .from("family_application")
       .insert({
         submission_id: submissionId,
@@ -92,30 +93,34 @@ Deno.serve(async (req) => {
         state_primary: primaryAddress.state,
         zip_primary: primaryAddress.postal,
         race_ethnicity_primary: M.primaryGuardian.raceOrEthnicity.get(jsonData),
-        add_additional: M.hasSecondaryGuardian.get(jsonData),
-        first_name_additional: secondaryName.first,
-        last_name_additional: secondaryName.last,
-        dob_additional:
-          M.secondaryGuardian.birthdateParser.get(jsonData)?.toISOString() ??
-          null,
-        email_additional: M.secondaryGuardian.email.get(jsonData),
-        phone_additional: M.secondaryGuardian.phone.get(jsonData),
-        address_1_additional: secondaryAddress.addr_line1,
-        address_2_additional: secondaryAddress.addr_line2,
-        city_additional: secondaryAddress.city,
-        state_additional: secondaryAddress.state,
-        zip_additional: secondaryAddress.postal,
-        race_ethnicity_additional:
-          M.secondaryGuardian.raceOrEthnicity.get(jsonData),
+        // NOTE: Deprecated
+        // add_additional: M.hasSecondaryGuardian.get(jsonData),
+        // first_name_additional: secondaryName.first,
+        // last_name_additional: secondaryName.last,
+        // dob_additional:
+        //   M.secondaryGuardian.birthdateParser.get(jsonData)?.toISOString() ??
+        //   null,
+        // email_additional: M.secondaryGuardian.email.get(jsonData),
+        // phone_additional: M.secondaryGuardian.phone.get(jsonData),
+        // address_1_additional: secondaryAddress.addr_line1,
+        // address_2_additional: secondaryAddress.addr_line2,
+        // city_additional: secondaryAddress.city,
+        // state_additional: secondaryAddress.state,
+        // zip_additional: secondaryAddress.postal,
+        // race_ethnicity_additional:
+        //   M.secondaryGuardian.raceOrEthnicity.get(jsonData),
         household_size: M.householdSize.get(jsonData),
         income_monthly_yearly: M.incomeFrequency.get(jsonData),
         income_yearly: income,
+        primary_has_income: M.primaryHasIncome.get(jsonData),
+        other_income_earners: M.otherIncomeEarners.get(jsonData),
         assets_one_million: M.assetsOverMillion.get(jsonData),
         current_childcare_benefits: M.currentChildCarePrograms.get(jsonData),
         child_first_name_primary: firstChildName.first,
         child_last_name_primary: firstChildName.last,
         child_dob_primary:
           M.firstChild.birthdate.get(jsonData)?.toISOString() ?? null,
+        child_disabled_primary: M.firstChild.hasDisability.get(jsonData),
         child_receiving_care_primary:
           M.firstChild.currentlyReceivingCare.get(jsonData),
         child_current_care_primary: M.firstChild.typeOfCare.get(jsonData),
@@ -135,6 +140,7 @@ Deno.serve(async (req) => {
         child_last_name_additional: secondChildName.last,
         child_dob_additional:
           M.secondChild.birthdate.get(jsonData)?.toISOString() ?? null,
+        child_disabled_additional: M.secondChild.hasDisability.get(jsonData),
         child_receiving_care_additional:
           M.secondChild.currentlyReceivingCare.get(jsonData),
         child_current_care_additional: M.secondChild.typeOfCare.get(jsonData),
@@ -158,6 +164,7 @@ Deno.serve(async (req) => {
         tc_dependent_on_CAP_approval:
           M.agreements.dependentOnCapApproval.get(jsonData),
         tc_change_providers: M.agreements.changeProviders.get(jsonData),
+        tc_income_verification: M.agreements.incomeVerification.get(jsonData),
         tc_terms_and_conditions: M.agreements.termsAndConditions.get(jsonData),
         tc_privacy_policy: M.agreements.privacyPolicy.get(jsonData),
         tc_TCPA: M.agreements.tcpa.get(jsonData),
@@ -174,10 +181,11 @@ Deno.serve(async (req) => {
         current_benefits_proof: getDocumentUrls(62),
       })
       .select(
-        `id, tc_terms_and_conditions,
-         phone_primary, email_primary, first_name_primary, last_name_primary,
-         add_additional, phone_additional, email_additional, first_name_additional, last_name_additional`,
-      );
+        `id, tc_income_verification,
+         phone_primary, email_primary, first_name_primary, last_name_primary, primary_has_income,
+         other_income_earners`,
+      )
+      .maybeSingle();
 
     if (error !== null) {
       console.error(error);
@@ -185,13 +193,11 @@ Deno.serve(async (req) => {
       return new Response("failed to insert data", { status: 500 });
     }
 
-    if (supabaseResponse === null || supabaseResponse.length === 0) {
+    if (supabaseData === null) {
       return new Response("failed to get Supabase ID", { status: 500 });
     }
 
-    const supabaseData = supabaseResponse[0];
-
-    if (!supabaseData.tc_terms_and_conditions) {
+    if (!supabaseData.tc_income_verification) {
       return new Response("Success", { status: 200 });
     }
 
@@ -202,27 +208,36 @@ Deno.serve(async (req) => {
       last_name: string | undefined;
       email: string | undefined;
       phone?: string;
-    }[] = [
-      {
+    }[] = [];
+
+    if (supabaseData.primary_has_income) {
+      truvOrders.push({
         products: ["income"],
         order_number: `${supabaseData.id}-primary`,
         first_name: supabaseData.first_name_primary ?? undefined,
         last_name: supabaseData.last_name_primary ?? undefined,
         email: supabaseData.email_primary ?? undefined,
         phone: supabaseData.phone_primary ?? undefined,
-      },
-    ];
-
-    if (supabaseData.add_additional) {
-      truvOrders.push({
-        products: ["income"],
-        order_number: `${supabaseData.id}-additional`,
-        first_name: supabaseData.first_name_additional ?? undefined,
-        last_name: supabaseData.last_name_additional ?? undefined,
-        email: supabaseData.email_additional ?? undefined,
       });
     }
 
+    if (Array.isArray(supabaseData.other_income_earners)) {
+      for (let i = 0; i < supabaseData.other_income_earners.length; i++) {
+        const otherEarner = supabaseData.other_income_earners[i] as {
+          [key: string]: string;
+        };
+
+        truvOrders.push({
+          products: ["income"],
+          order_number: `${supabaseData.id}-additional-${i}`,
+          first_name: otherEarner["First Name"],
+          last_name: otherEarner["Last Name"],
+          email: otherEarner["Email"],
+        });
+      }
+    }
+
+    const truvIds: string[] = [];
     for (let i = 0; i < truvOrders.length; i++) {
       const order = truvOrders[i];
       const res = await fetch("https://prod.truv.com/v1/orders/", {
@@ -241,16 +256,18 @@ Deno.serve(async (req) => {
       const dbField = i === 0 ? "truv_id_primary" : "truv_id_additional";
       console.log(`Truv ID (${dbField}):`, userId);
 
-      const { error: truvSupabaseError } = await supabase
-        .from("family_application")
-        .update({ [dbField]: userId })
-        .eq("id", supabaseData.id);
+      truvIds.push(userId);
+    }
 
-      if (truvSupabaseError !== null) {
-        console.error(error);
-        Sentry.captureException(error);
-        return new Response("failed to update truv_id data", { status: 500 });
-      }
+    const { error: truvSupabaseError } = await supabase
+      .from("family_application")
+      .update({ truv_ids: truvIds })
+      .eq("id", supabaseData.id);
+
+    if (truvSupabaseError !== null) {
+      console.error(error);
+      Sentry.captureException(error);
+      return new Response("failed to update 'truv_ids' data", { status: 500 });
     }
 
     return new Response("Success", { status: 200 });

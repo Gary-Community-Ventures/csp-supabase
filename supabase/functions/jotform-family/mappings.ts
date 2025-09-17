@@ -13,6 +13,7 @@ import {
   acceptParser,
   checkboxesParser,
   arrayCheckboxesParser,
+  jsonParser,
 } from "../_shared/mappings/parsers.ts";
 import { Mapping } from "../_shared/mappings/mapping.ts";
 
@@ -65,6 +66,8 @@ export const M = {
   incomeFrequency: new Mapping("q180_whenYou", noChangeParser, isString),
   monthlyIncome: new Mapping("q17_whatIs17", numberOrNullParser, isString),
   yearlyIncome: new Mapping("q181_whatIs181", numberOrNullParser, isString),
+  primaryHasIncome: new Mapping("q187_doYou187", yesNoParser, isString),
+  otherIncomeEarners: new Mapping("q190_typeA190", jsonParser, isString),
   assetsOverMillion: new Mapping("q84_doesYour84", yesNoParser, isString),
   currentChildCarePrograms: new Mapping(
     "q19_areYou",
@@ -81,6 +84,7 @@ export const M = {
   firstChild: {
     name: new Mapping("q37_pleaseEnter37", noChangeParser, nameObject),
     birthdate: new Mapping("q38_whatIs38", birthdateParser, birthdateObject),
+    hasDisability: new Mapping("q193_c1disability", yesNoParser, isString),
     currentlyReceivingCare: new Mapping("q90_isYour90", yesNoParser, isString),
     typeOfCare: new Mapping("q70_typeA70", checkboxesParser(), isString),
     satisfaction: new Mapping("q134_howSatisfied", noChangeParser, isString),
@@ -107,6 +111,7 @@ export const M = {
       birthdateParser,
       birthdateObject,
     ),
+    hasDisability: new Mapping("q194_c2disability", yesNoParser, isString),
     currentlyReceivingCare: new Mapping("q99_isYour", yesNoParser, isString),
     typeOfCare: new Mapping("q72_typeA72", checkboxesParser(), isString),
     satisfaction: new Mapping("q135_howSatisfied135", noChangeParser, isString),
@@ -160,6 +165,7 @@ export const M = {
       isString,
     ),
     changeProviders: new Mapping("q139_typeA139", acceptParser, isString),
+    incomeVerification: new Mapping("q195_typeA195", acceptParser, isString),
     photoRelease: new Mapping("q170_photoRelease", acceptParser, isString),
     termsAndConditions: new Mapping("q140_typeA140", acceptParser, isString),
     privacyPolicy: new Mapping("q141_typeA141", acceptParser, isString),
