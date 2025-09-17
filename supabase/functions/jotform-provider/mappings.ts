@@ -1,6 +1,7 @@
 import { Mapping } from "../_shared/mappings/mapping.ts";
 import {
   acceptParser,
+  arrayCheckboxesParser,
   checkboxesParser,
   jsonParser,
   noChangeParser,
@@ -10,7 +11,12 @@ import {
   tableParser,
   yesNoParser,
 } from "../_shared/mappings/parsers.ts";
-import { isObject, isString, isTable } from "../_shared/mappings/isType.ts";
+import {
+  isArray,
+  isObject,
+  isString,
+  isTable,
+} from "../_shared/mappings/isType.ts";
 
 const nameObject = isObject(["first", "last"]);
 const phoneObject = isObject(["full"]);
@@ -37,6 +43,11 @@ export const M = {
     notLicensedHome: new Mapping("q68_whatIs68", noChangeParser, addressObject),
     notLicensedCare: new Mapping("q15_whatIs15", noChangeParser, addressObject),
   },
+  caresForDisabled: new Mapping(
+    "q178_servedisabilities",
+    yesNoParser,
+    isString,
+  ),
   hasSsnOrItin: new Mapping("q100_doYou", yesNoParser, isString),
   careSetting: new Mapping("q69_whereDo", stringOrNullParser, isString),
   relatedToSomeChildren: new Mapping("q103_areYou103", yesNoParser, isString),
@@ -89,6 +100,25 @@ export const M = {
     isString,
   ),
   whenFamiliesPay: new Mapping("q176_whenDo", stringOrNullParser, isString),
+  currentBenefits: new Mapping(
+    "q181_ffnbenefits",
+    arrayCheckboxesParser({
+      "Medicaid (Health First Colorado)": "medicaid",
+      "Child Health Plan Plus (CHP+)": "chp",
+      "Supplemental Nutrition Assistance Program (SNAP)": "snap",
+      WIC: "wic",
+      "TANF (Colorado Works)": "tanf",
+      CCCAP: "cccap",
+      "Head Start": "head_start",
+      None: "none",
+    }),
+    isArray,
+  ),
+  benefitsImpactFollowUp: new Mapping(
+    "q183_additionalIncomefollowup",
+    yesNoParser,
+    isString,
+  ),
   selfAttestation: {
     gpqc: new Mapping("q91_generalProvider", tableParser(5), isTable),
     hsce: new Mapping("q116_healthampamp", tableParser(6), isTable),

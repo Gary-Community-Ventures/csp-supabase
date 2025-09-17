@@ -962,6 +962,7 @@ export type Database = {
           application_submitted_at: string | null
           attendance_tracking_system: Json | null
           attestation_signature: string | null
+          benefits_impact_follow_up: boolean | null
           car_failure_to_report: string | null
           car_immediately_report: string | null
           care_location_address_1: string | null
@@ -970,6 +971,7 @@ export type Database = {
           care_location_state: string | null
           care_location_zip: string | null
           care_setting: string | null
+          cares_for_disabled: boolean | null
           ccpr_activities: string | null
           ccpr_materials_and_equipment: string | null
           ccpr_meals: string | null
@@ -980,6 +982,7 @@ export type Database = {
           cpr_certified: string | null
           cpr_upload: string[] | null
           created_at: string
+          current_benefits: Json | null
           email: string | null
           first_name: string | null
           gpqc_capabilities: string | null
@@ -994,6 +997,7 @@ export type Database = {
           hsce_protect_from_dangers: string | null
           hsce_working_detectors: string | null
           id: number
+          id_upload: Json | null
           last_name: string | null
           last_update_date: string | null
           license_name: string | null
@@ -1044,6 +1048,7 @@ export type Database = {
           application_submitted_at?: string | null
           attendance_tracking_system?: Json | null
           attestation_signature?: string | null
+          benefits_impact_follow_up?: boolean | null
           car_failure_to_report?: string | null
           car_immediately_report?: string | null
           care_location_address_1?: string | null
@@ -1052,6 +1057,7 @@ export type Database = {
           care_location_state?: string | null
           care_location_zip?: string | null
           care_setting?: string | null
+          cares_for_disabled?: boolean | null
           ccpr_activities?: string | null
           ccpr_materials_and_equipment?: string | null
           ccpr_meals?: string | null
@@ -1062,6 +1068,7 @@ export type Database = {
           cpr_certified?: string | null
           cpr_upload?: string[] | null
           created_at?: string
+          current_benefits?: Json | null
           email?: string | null
           first_name?: string | null
           gpqc_capabilities?: string | null
@@ -1076,6 +1083,7 @@ export type Database = {
           hsce_protect_from_dangers?: string | null
           hsce_working_detectors?: string | null
           id?: number
+          id_upload?: Json | null
           last_name?: string | null
           last_update_date?: string | null
           license_name?: string | null
@@ -1126,6 +1134,7 @@ export type Database = {
           application_submitted_at?: string | null
           attendance_tracking_system?: Json | null
           attestation_signature?: string | null
+          benefits_impact_follow_up?: boolean | null
           car_failure_to_report?: string | null
           car_immediately_report?: string | null
           care_location_address_1?: string | null
@@ -1134,6 +1143,7 @@ export type Database = {
           care_location_state?: string | null
           care_location_zip?: string | null
           care_setting?: string | null
+          cares_for_disabled?: boolean | null
           ccpr_activities?: string | null
           ccpr_materials_and_equipment?: string | null
           ccpr_meals?: string | null
@@ -1144,6 +1154,7 @@ export type Database = {
           cpr_certified?: string | null
           cpr_upload?: string[] | null
           created_at?: string
+          current_benefits?: Json | null
           email?: string | null
           first_name?: string | null
           gpqc_capabilities?: string | null
@@ -1158,6 +1169,7 @@ export type Database = {
           hsce_protect_from_dangers?: string | null
           hsce_working_detectors?: string | null
           id?: number
+          id_upload?: Json | null
           last_name?: string | null
           last_update_date?: string | null
           license_name?: string | null

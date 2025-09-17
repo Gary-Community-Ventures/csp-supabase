@@ -90,6 +90,7 @@ Deno.serve(async (req) => {
       city: notLicensedHomeAddress.city,
       state: notLicensedHomeAddress.state,
       zip: notLicensedHomeAddress.postal,
+      cares_for_disabled: M.caresForDisabled.get(jsonData),
       ssn_or_itin: M.hasSsnOrItin.get(jsonData),
       care_setting: M.careSetting.get(jsonData),
       related_to_some_children: M.relatedToSomeChildren.get(jsonData),
@@ -112,6 +113,8 @@ Deno.serve(async (req) => {
       accepted_forms_of_payment: M.acceptedFormsOfPayment.get(jsonData),
       attendance_tracking_system: M.attendanceTracking.get(jsonData),
       when_families_pay: M.whenFamiliesPay.get(jsonData),
+      current_benefits: M.currentBenefits.get(jsonData),
+      benefits_impact_follow_up: M.benefitsImpactFollowUp.get(jsonData),
       gpqc_capabilities: gpqcAttestation[0],
       gpqc_experienced: gpqcAttestation[1],
       gpqc_punishment: gpqcAttestation[2],
@@ -148,6 +151,7 @@ Deno.serve(async (req) => {
       signature: jotformData.answers[131].answer,
       w9: getDocumentUrls(132),
       cpr_upload: getDocumentUrls(153),
+      id_upload: getDocumentUrls(186), 
     });
 
     if (error !== null) {
