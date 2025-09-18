@@ -29,7 +29,7 @@ const addressObject = isObject([
 ]);
 
 export const M = {
-  preferredLanguage: new Mapping("q2_whatIs", stringOrNullParser, isString),
+  preferredLanguage: new Mapping("input_language", stringOrNullParser, isString),
   familyName: new Mapping("q165_pleaseEnter165", stringOrNullParser, isString),
   isLicensed: new Mapping("q97_areYou", yesNoParser, isString),
   licenseNumber: new Mapping("q65_whatIs65", stringOrNullParser, isString),

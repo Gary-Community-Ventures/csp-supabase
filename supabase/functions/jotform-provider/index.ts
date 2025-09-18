@@ -10,7 +10,7 @@ const jotformApiKey = Deno.env.get("JOTFORM_API_KEY");
 const sentryDsn = Deno.env.get("SENTRY_DSN");
 
 if (!supabaseUrl || !supabaseAnonKey || !jotformApiKey) {
-  throw new Error("Supabase URL and/or anon key not set");
+  throw new Error("Missing environment variables");
 }
 
 if (sentryDsn) {
