@@ -31,7 +31,7 @@ export function numberOrNullParser(value: string): number | null {
 
 export function remapParser(map: Record<string, string> = {}) {
   return (value: string) => {
-    return map[value];
+    return map[value] ?? value;
   };
 }
 

@@ -7,6 +7,7 @@ import {
   noChangeParser,
   numberOrNullParser,
   phoneNumberParser,
+  remapParser,
   stringOrNullParser,
   tableParser,
   yesNoParser,
@@ -29,7 +30,23 @@ const addressObject = isObject([
 ]);
 
 export const M = {
-  preferredLanguage: new Mapping("input_language", stringOrNullParser, isString),
+  preferredLanguage: new Mapping(
+    "q2_whatIs",
+    remapParser({
+      Español: "es",
+      English: "en",
+      አማርኛ: "am",
+      عربي: "ar",
+      中文: "zh",
+      Français: "fr",
+      Deutsch: "de",
+      हिंदी: "hi",
+      한국인: "ko",
+      Русский: "ru",
+      "Tiếng Việt": "vi",
+    }),
+    isString,
+  ),
   familyName: new Mapping("q165_pleaseEnter165", stringOrNullParser, isString),
   isLicensed: new Mapping("q97_areYou", yesNoParser, isString),
   licenseNumber: new Mapping("q65_whatIs65", stringOrNullParser, isString),

@@ -14,6 +14,7 @@ import {
   checkboxesParser,
   arrayCheckboxesParser,
   jsonParser,
+  remapParser,
 } from "../_shared/mappings/parsers.ts";
 import { Mapping } from "../_shared/mappings/mapping.ts";
 
@@ -31,7 +32,23 @@ const addressObject = isObject([
 export const M = {
   linkId: new Mapping("q176_link_id", stringOrNullParser, isString),
   timer: new Mapping("q172_time_tracker", stringOrNullParser, isString),
-  selectedLanguage: new Mapping("input_language", noChangeParser, isString),
+  selectedLanguage: new Mapping(
+    "q2_whatIs",
+    remapParser({
+      Español: "es",
+      English: "en",
+      አማርኛ: "am",
+      عربي: "ar",
+      中文: "zh",
+      Français: "fr",
+      Deutsch: "de",
+      हिंदी: "hi",
+      한국인: "ko",
+      Русский: "ru",
+      "Tiếng Việt": "vi",
+    }),
+    isString,
+  ),
   providerName: new Mapping("q178_pleaseEnter178", noChangeParser, isString),
   primaryGuardian: {
     name: new Mapping("q11_pleaseEnter", noChangeParser, nameObject),
