@@ -9,7 +9,7 @@ export class Mapping<I, T> {
     const value = data[this.key];
 
     if (!this.isType(value)) {
-      throw new Error(`Invalid type for ${this.key}`);
+      throw new Error(`Invalid type for ${this.key}. Expected '${this.isType}' but got '${typeof value}'. Value was '${value}'`);
     }
 
     return this.parser(value);

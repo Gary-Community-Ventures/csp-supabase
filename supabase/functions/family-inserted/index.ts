@@ -48,9 +48,6 @@ Deno.serve(async (req) => {
       return new Response("failed to get family data", { status: 500 });
     }
 
-    const language =
-      familyData.language.toLowerCase() === "español" ? "es" : "en";
-
     await hubspot.crm.contacts.batchApi.upsert({
       inputs: [
         {
@@ -61,7 +58,7 @@ Deno.serve(async (req) => {
             lastname: last_name,
             email: email,
             phone: phone_number,
-            hs_language: language,
+            hs_language: familyData.language,
             cap_applicant_type: "cap_family",
             family_id: String(id),
           },

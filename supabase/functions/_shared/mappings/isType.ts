@@ -22,14 +22,6 @@ export function isObject<T extends string, V extends Record<T, string>>(
   };
 }
 
-export function isArray(value: unknown): value is string[] {
-  if (!Array.isArray(value)) {
-    return false;
-  }
-
-  return value.every((value) => typeof value === "string");
-}
-
 export function isArrayOrEmptyString(value: unknown): value is string[] | "" {
   if (value === "") {
     return true;

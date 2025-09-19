@@ -13,7 +13,7 @@ import {
   yesNoParser,
 } from "../_shared/mappings/parsers.ts";
 import {
-  isArray,
+  isArrayOrEmptyString,
   isObject,
   isString,
   isTable,
@@ -129,7 +129,7 @@ export const M = {
       "Head Start": "head_start",
       None: "none",
     }),
-    isArray,
+    isArrayOrEmptyString,
   ),
   benefitsImpactFollowUp: new Mapping(
     "q183_additionalIncomefollowup",

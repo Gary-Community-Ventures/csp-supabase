@@ -775,6 +775,7 @@ export type Database = {
           approved: boolean | null
           approved_at: string | null
           attendance_tracking_system: Json | null
+          background_check_links: string[] | null
           care_location_address_1: string | null
           care_location_address_2: string | null
           care_location_city: string | null
@@ -793,7 +794,6 @@ export type Database = {
           first_name: string | null
           home_safety_and_injury_prevention_training_completed_at: string | null
           id: number
-          language: Database["public"]["Enums"]["Language"]
           last_name: string | null
           license_name: string | null
           license_number: string | null
@@ -835,6 +835,7 @@ export type Database = {
           approved?: boolean | null
           approved_at?: string | null
           attendance_tracking_system?: Json | null
+          background_check_links?: string[] | null
           care_location_address_1?: string | null
           care_location_address_2?: string | null
           care_location_city?: string | null
@@ -855,7 +856,6 @@ export type Database = {
             | string
             | null
           id?: number
-          language?: Database["public"]["Enums"]["Language"]
           last_name?: string | null
           license_name?: string | null
           license_number?: string | null
@@ -897,6 +897,7 @@ export type Database = {
           approved?: boolean | null
           approved_at?: string | null
           attendance_tracking_system?: Json | null
+          background_check_links?: string[] | null
           care_location_address_1?: string | null
           care_location_address_2?: string | null
           care_location_city?: string | null
@@ -917,7 +918,6 @@ export type Database = {
             | string
             | null
           id?: number
-          language?: Database["public"]["Enums"]["Language"]
           last_name?: string | null
           license_name?: string | null
           license_number?: string | null
@@ -1224,6 +1224,7 @@ export type Database = {
           background_check_needed: boolean | null
           background_check_passed_at: string | null
           background_check_submitted_at: string | null
+          contact_information: Json | null
           cpr_training_completed_at: string | null
           cpr_training_required: boolean | null
           cpr_upload: string[] | null
@@ -1256,6 +1257,7 @@ export type Database = {
           background_check_needed?: boolean | null
           background_check_passed_at?: string | null
           background_check_submitted_at?: string | null
+          contact_information?: Json | null
           cpr_training_completed_at?: string | null
           cpr_training_required?: boolean | null
           cpr_upload?: string[] | null
@@ -1288,6 +1290,7 @@ export type Database = {
           background_check_needed?: boolean | null
           background_check_passed_at?: string | null
           background_check_submitted_at?: string | null
+          contact_information?: Json | null
           cpr_training_completed_at?: string | null
           cpr_training_required?: boolean | null
           cpr_upload?: string[] | null
