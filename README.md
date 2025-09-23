@@ -8,6 +8,8 @@ make start
 
 ## Get credentials
 
+Can be copied into the backend's `.env` file.
+
 ```bash
 make env
 ```
