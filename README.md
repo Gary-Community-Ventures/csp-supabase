@@ -20,14 +20,10 @@ make studio
 
 ## Pull remote schema
 
+Can be used if there are changes made to the prod db that we need locally.
+
 ```bash
 make pull
-```
-
-## Reseed local db
-
-```bash
-make seed
 ```
 
 ## Stop local Supabase

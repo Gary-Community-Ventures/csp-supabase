@@ -7,8 +7,6 @@ reset:
 	supabase db reset --local
 pull:
 	supabase db pull
-seed:
-	supabase db reset --local --skip-migrations
 studio:
 	@echo "http://localhost:54323"
 start:
