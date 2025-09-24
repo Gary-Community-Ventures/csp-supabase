@@ -23,7 +23,7 @@ entrypoint = "./functions/jotform-provider/index.ts"
 
 [functions.family-inserted]
 enabled = true
-verify_jwt = true
+verify_jwt = false
 import_map = "./functions/family-inserted/deno.json"
 # Uncomment to specify a custom file path to the entrypoint.
 # Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
@@ -34,7 +34,7 @@ entrypoint = "./functions/family-inserted/index.ts"
 
 [functions.provider-inserted]
 enabled = true
-verify_jwt = true
+verify_jwt = false
 import_map = "./functions/provider-inserted/deno.json"
 # Uncomment to specify a custom file path to the entrypoint.
 # Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
@@ -42,3 +42,10 @@ entrypoint = "./functions/provider-inserted/index.ts"
 # Specifies static files to be bundled with the function. Supports glob patterns.
 # For example, if you want to serve static HTML pages in your function:
 # static_files = [ "./functions/provider-inserted/*.html" ]
+
+[db.seed]
+# If enabled, seeds the database after migrations during a db reset.
+enabled = true
+# Specifies an ordered list of seed files to load during db reset.
+# Supports glob patterns relative to supabase directory: "./seeds/*.sql"
+sql_paths = ["./seed/main.sql", "./seed/local.sql"]

@@ -2,6 +2,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import * as Sentry from "npm:@sentry/deno";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { Database } from "../_shared/types/supabase.ts";
+import { isAuthorized } from "../_shared/auth.ts";
 import { Client } from "npm:@hubspot/api-client";
 
 const supabaseUrl = Deno.env.get("SUPABASE_URL");
@@ -22,6 +23,10 @@ const hubspot = new Client({ accessToken: hubspotApiKey });
 
 Deno.serve(async (req) => {
   try {
+    if (!isAuthorized(req)) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+
     if (req.method !== "POST") {
       return new Response("Method not allowed", { status: 405 });
     }

@@ -1,0 +1,14 @@
+# Include custom types
+# include type public."Language"
+# include type public."Provider Type"
+# include type public."Status"
+
+# Include only these tables
+include table public.family
+include table public.child
+include table public.guardian
+include table public.provider
+include table public.provider_child_mapping
+
+# Exclude all triggers
+# exclude trigger *

@@ -18,6 +18,9 @@ supabase/functions/jotform-providers/deno.json
 # NPM related files for jotform-providers
 supabase/functions/jotform-providers/.npmrc
 
+# Hide custom seed file
+supabase/seed/local.sql
+
 # Common build artifacts and dependencies
 node_modules/
 dist/
@@ -29,3 +32,4 @@ provider_dump.json
 
 # Environment variables
 .env
+.env.staging

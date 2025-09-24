@@ -2,6 +2,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import * as Sentry from "npm:@sentry/deno";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { Database } from "../_shared/types/supabase.ts";
+import { isAuthorized } from "../_shared/auth.ts";
 import { Client } from "npm:@hubspot/api-client";
 
 const supabaseUrl = Deno.env.get("SUPABASE_URL");
@@ -11,8 +12,8 @@ const hubspotApiKey = Deno.env.get("HUBSPOT_API_KEY");
 const tazApiKey = Deno.env.get("TAZ_API_KEY");
 const tazHost = Deno.env.get("TAZ_HOST");
 const tazClientId = Deno.env.get("TAZ_CLIENT_ID");
-const tazEnglishProductId = Deno.env.get("TAX_ENGLISH_PRODUCT_ID");
-const tazSpanishProductId = Deno.env.get("TAX_SPANISH_PRODUCT_ID");
+const tazEnglishProductId = Deno.env.get("TAZ_ENGLISH_PRODUCT_ID");
+const tazSpanishProductId = Deno.env.get("TAZ_SPANISH_PRODUCT_ID");
 
 if (
   !supabaseUrl ||
@@ -36,14 +37,18 @@ const hubspot = new Client({ accessToken: hubspotApiKey });
 
 Deno.serve(async (req) => {
   try {
+    if (!isAuthorized(req)) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+
     if (req.method !== "POST") {
       return new Response("Method not allowed", { status: 405 });
     }
 
     const data = await req.json();
     const {
-      email, // both
-      phone, // both
+      // email, // both
+      // phone, // both
       first_name, // both
       last_name, // both
       type, // both
@@ -55,28 +60,28 @@ Deno.serve(async (req) => {
     console.log(id);
 
     // TODO: add test emails
+    const email = "cpena@garycommunity.org";
+    const phone = "3033568755";
 
-    await hubspot.crm.contacts.batchApi.upsert({
-      inputs: [
-        {
-          idProperty: "email",
-          id: email,
-          properties: {
-            firstname: first_name,
-            lastname: last_name,
-            email: email,
-            phone: phone,
-            hs_language: preferred_language,
-            cap_applicant_type: "cap_provider",
-            cap_provider_licensed: type !== "ffn" ? "true" : "false",
-            provider_id: String(id),
-          },
-        },
-      ],
-    });
-    return new Response(JSON.stringify({ message: "Ok" }), {
-      headers: { "Content-Type": "application/json" },
-    });
+    // await hubspot.crm.contacts.batchApi.upsert({
+    //   inputs: [
+    //     {
+    //       idProperty: "email",
+    //       id: email,
+    //       properties: {
+    //         firstname: first_name,
+    //         lastname: last_name,
+    //         email: email,
+    //         phone: phone,
+    //         hs_language: preferred_language,
+    //         cap_applicant_type: "cap_provider",
+    //         cap_provider_licensed: type !== "ffn" ? "true" : "false",
+    //         provider_id: String(id),
+    //       },
+    //     },
+    //   ],
+    // });
+
     if (type !== "ffn") {
       return new Response(JSON.stringify({ message: "Ok" }), {
         headers: { "Content-Type": "application/json" },
@@ -97,19 +102,20 @@ Deno.serve(async (req) => {
         firstName: first_name,
         lastName: last_name,
         email: email,
-        phoneNumber: phone,
+        phoneNumber: `(${phone.slice(0, 3)}) ${phone.slice(3, 6)}-${phone.slice(6, 10)}`,
       },
       id: `${id}-0`,
     });
 
-    const otherAdults = JSON.parse(other_adults_raw) ?? [];
+    const otherAdults = other_adults_raw ?? [];
     for (let i = 0; i < otherAdults.length; i++) {
       const otherAdult = otherAdults[i];
       applicants.push({
         applicantData: {
           firstName: otherAdult["First Name"],
           lastName: otherAdult["Last Name"],
-          email: otherAdult["Email"],
+          // email: otherAdult["Email"],
+          email: email, // TODO: remove test emails
         },
         id: `${id}-${i}`,
       });
@@ -136,6 +142,7 @@ Deno.serve(async (req) => {
         });
 
         const applicantData = await applicantRes.json();
+        console.log(applicantData);
 
         const applicantId = applicantData.applicantGuid;
 
@@ -177,7 +184,7 @@ Deno.serve(async (req) => {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("Error in family-inserted function:", error);
+    console.error("Error in provider-inserted function:", error);
     Sentry.captureException(error);
     return new Response("Internal Server Error", { status: 500 });
   }
