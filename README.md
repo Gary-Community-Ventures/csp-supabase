@@ -20,6 +20,12 @@ make env
 make studio
 ```
 
+## Dump db and restart with seed data
+
+```bash
+make reset
+```
+
 ## Stop local Supabase
 
 ```bash
