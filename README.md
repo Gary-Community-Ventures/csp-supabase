@@ -14,6 +14,12 @@ Can be copied into the backend's `.env` file.
 make env
 ```
 
+or on Mac:
+
+```bash
+make env-mac
+```
+
 ## Access local Supabase Studio
 
 ```bash
