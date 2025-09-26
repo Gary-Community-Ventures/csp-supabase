@@ -11,7 +11,7 @@ VALUES
 
 INSERT INTO provider (id, name, first_name, last_name, email, phone, care_location_address_1, care_location_address_2, care_location_city, care_location_state, care_location_zip, preferred_language, status, type, payment_enabled, cpr_training_link, cpr_certified)
 VALUES
-    (1, 'Red Sox', 'Alex', 'Cora', '', '', '1705 17th St', '#200', 'Denver', 'CO', '80202', 'en', 'Approved', 'ffn', TRUE, 'youtube.com/watch?v=zk-2_Z9bRds', 'No'),
+    (1, 'Red Sox', 'Alex', 'Cora', '', '', '1705 17th St', '#200', 'Denver', 'CO', '80202', 'en', 'Approved', 'ffn', TRUE, 'https://youtube.com/watch?v=zk-2_Z9bRds', 'No'),
     (2, 'WooSox', 'Chad', 'Tracy', '', '', '1705 17th St', '#200', 'Denver', 'CO', '80202', 'en', 'Approved', 'center', TRUE, 'https://youtu.be/VTUG-wrriaM?feature=shared', 'No');
 
 INSERT INTO provider_child_mapping (provider_id, child_id)
