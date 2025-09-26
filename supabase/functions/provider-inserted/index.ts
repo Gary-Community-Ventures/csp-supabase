@@ -47,8 +47,8 @@ Deno.serve(async (req) => {
 
     const data = await req.json();
     const {
-      // email, // both
-      // phone, // both
+      email, // both
+      phone, // both
       first_name, // both
       last_name, // both
       type, // both
@@ -59,28 +59,24 @@ Deno.serve(async (req) => {
 
     console.log(id);
 
-    // TODO: add test emails
-    const email = "cpena@garycommunity.org";
-    const phone = "3033568755";
-
-    // await hubspot.crm.contacts.batchApi.upsert({
-    //   inputs: [
-    //     {
-    //       idProperty: "email",
-    //       id: email,
-    //       properties: {
-    //         firstname: first_name,
-    //         lastname: last_name,
-    //         email: email,
-    //         phone: phone,
-    //         hs_language: preferred_language,
-    //         cap_applicant_type: "cap_provider",
-    //         cap_provider_licensed: type !== "ffn" ? "true" : "false",
-    //         provider_id: String(id),
-    //       },
-    //     },
-    //   ],
-    // });
+    await hubspot.crm.contacts.batchApi.upsert({
+      inputs: [
+        {
+          idProperty: "email",
+          id: email,
+          properties: {
+            firstname: first_name,
+            lastname: last_name,
+            email: email,
+            phone: phone,
+            hs_language: preferred_language,
+            cap_applicant_type: "cap_provider",
+            cap_provider_licensed: type !== "ffn" ? "true" : "false",
+            provider_id: String(id),
+          },
+        },
+      ],
+    });
 
     if (type !== "ffn") {
       return new Response(JSON.stringify({ message: "Ok" }), {
@@ -114,8 +110,7 @@ Deno.serve(async (req) => {
         applicantData: {
           firstName: otherAdult["First Name"],
           lastName: otherAdult["Last Name"],
-          // email: otherAdult["Email"],
-          email: email, // TODO: remove test emails
+          email: otherAdult["Email"],
         },
         id: `${id}-${i}`,
       });
@@ -160,7 +155,6 @@ Deno.serve(async (req) => {
           }),
         });
         const orderData = await orderRes.json();
-        console.log(orderData);
 
         backgroundCheckLinks.push(orderData.quickappApplicantLink);
         fileNumbers.push(orderData.fileNumber);
