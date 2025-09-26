@@ -132,7 +132,10 @@ Deno.serve(async (req) => {
       productId = tazSpanishProductId;
     }
 
+    const applicantIds: string[] = [];
     const backgroundCheckLinks: string[] = [];
+    const fileNumbers: string[] = [];
+    const orderIds: string[] = [];
     try {
       for (const applicant of applicants) {
         const applicantRes = await fetch(applicantUrl, {
@@ -142,9 +145,9 @@ Deno.serve(async (req) => {
         });
 
         const applicantData = await applicantRes.json();
-        console.log(applicantData);
 
         const applicantId = applicantData.applicantGuid;
+        applicantIds.push(applicantId);
 
         const orderRes = await fetch(orderUrl, {
           headers: headers,
@@ -160,6 +163,8 @@ Deno.serve(async (req) => {
         console.log(orderData);
 
         backgroundCheckLinks.push(orderData.quickappApplicantLink);
+        fileNumbers.push(orderData.fileNumber);
+        orderIds.push(orderData.orderGuid);
       }
     } catch (error) {
       console.error("Error in provider-inserted function:", error);
@@ -167,9 +172,20 @@ Deno.serve(async (req) => {
       return new Response("Internal Server Error", { status: 500 });
     }
 
+    const adminLinks = fileNumbers.map(
+      (fileNumber) =>
+        `https://www.jdpalatine.net/workspace/results.taz?file=${fileNumber}`,
+    );
+
     const { error } = await supabase
       .from("provider")
-      .update({ background_check_links: backgroundCheckLinks })
+      .update({
+        background_check_links: backgroundCheckLinks,
+        jdp_applicant_ids: applicantIds,
+        jdp_order_ids: orderIds,
+        jdp_file_numbers: fileNumbers,
+        jdp_admin_links: adminLinks,
+      })
       .eq("id", id);
 
     if (error) {
