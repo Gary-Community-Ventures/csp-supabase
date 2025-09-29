@@ -201,8 +201,11 @@ Deno.serve(async (req) => {
       return new Response("Success", { status: 200 });
     }
 
+    const truvTemplateId = '33b750e976b3459aa48ec986c2f834af'
+
     const truvOrders: {
       products: string[];
+      template_id: string;
       order_number: string;
       first_name: string | undefined;
       last_name: string | undefined;
@@ -213,6 +216,7 @@ Deno.serve(async (req) => {
     if (supabaseData.primary_has_income) {
       truvOrders.push({
         products: ["income"],
+        template_id: truvTemplateId,
         order_number: `${supabaseData.id}-primary`,
         first_name: supabaseData.first_name_primary ?? undefined,
         last_name: supabaseData.last_name_primary ?? undefined,
@@ -229,6 +233,7 @@ Deno.serve(async (req) => {
 
         truvOrders.push({
           products: ["income"],
+          template_id: truvTemplateId,
           order_number: `${supabaseData.id}-additional-${i}`,
           first_name: otherEarner["First Name"],
           last_name: otherEarner["Last Name"],
