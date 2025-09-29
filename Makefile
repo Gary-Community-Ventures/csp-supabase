@@ -1,6 +1,9 @@
 env:
 	@echo "SUPABASE_URL=http://$$(hostname -I | awk '{print $$1}'):54321"
 	@echo "SUPABASE_KEY=$$(supabase status 2>/dev/null | grep 'service_role key' | cut -d: -f2 | tr -d ' ')"
+env-mac:
+	@echo "SUPABASE_URL=http://$$(ifconfig | grep 'inet ' | grep -v 127.0.0.1 | head -1 | awk '{print $$2}'):54321"
+	@echo "SUPABASE_KEY=$$(supabase status --output json | jq -r '.SERVICE_ROLE_KEY')"
 status:
 	supabase status
 reset:
