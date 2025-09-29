@@ -256,7 +256,7 @@ Deno.serve(async (req) => {
       });
 
       const truvResponse = await res.json();
-      const { user_id: userId } = truvResponse;
+      const { id: userId } = truvResponse;
 
       const dbField = i === 0 ? "truv_id_primary" : "truv_id_additional";
       console.log(`Truv ID (${dbField}):`, userId);
