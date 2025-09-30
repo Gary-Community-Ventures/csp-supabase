@@ -90,6 +90,7 @@ Deno.serve(async (req) => {
         lastName: string;
         email: string;
         phoneNumber?: string;
+        textingEnabled?: true;
       };
       id: string;
     }[] = [];
@@ -99,6 +100,7 @@ Deno.serve(async (req) => {
         lastName: last_name,
         email: email,
         phoneNumber: `(${phone.slice(0, 3)}) ${phone.slice(3, 6)}-${phone.slice(6, 10)}`,
+        textingEnabled: true,
       },
       id: `${id}-0`,
     });
@@ -140,6 +142,7 @@ Deno.serve(async (req) => {
         });
 
         const applicantData = await applicantRes.json();
+        console.log(applicantData);
 
         const applicantId = applicantData.applicantGuid;
         applicantIds.push(applicantId);
@@ -152,9 +155,11 @@ Deno.serve(async (req) => {
             clientProductGuid: productId,
             useQuickApp: true,
             externalIdentifier: applicant.id,
+            quickappNotifyApplicants: "true",
           }),
         });
         const orderData = await orderRes.json();
+        console.log(orderData);
 
         backgroundCheckLinks.push(orderData.quickappApplicantLink);
         fileNumbers.push(orderData.fileNumber);

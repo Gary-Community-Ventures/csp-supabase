@@ -1,0 +1,3 @@
+ALTER TABLE family ADD COLUMN link_id TEXT;
+
+ALTER TABLE provider ADD COLUMN link_id TEXT;

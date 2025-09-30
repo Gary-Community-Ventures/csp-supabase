@@ -3,6 +3,7 @@
 
 # Supabase specific temporary directories
 supabase/.temp/
+supabase/.branches/
 
 # Deno related files
 supabase/functions/jotform-family/deno.lock

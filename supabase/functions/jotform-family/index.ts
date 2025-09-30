@@ -201,7 +201,7 @@ Deno.serve(async (req) => {
       return new Response("Success", { status: 200 });
     }
 
-    const truvTemplateId = '33b750e976b3459aa48ec986c2f834af'
+    const truvTemplateId = "33b750e976b3459aa48ec986c2f834af";
 
     const truvOrders: {
       products: string[];
