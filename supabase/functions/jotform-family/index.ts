@@ -202,6 +202,9 @@ Deno.serve(async (req) => {
     }
 
     const truvTemplateId = "33b750e976b3459aa48ec986c2f834af";
+    const manager = {
+      email: "support@capcolorado.org",
+    };
 
     const truvOrders: {
       products: string[];
@@ -211,6 +214,7 @@ Deno.serve(async (req) => {
       last_name: string | undefined;
       email: string | undefined;
       phone?: string;
+      manager: { email: string };
     }[] = [];
 
     if (supabaseData.primary_has_income) {
@@ -222,6 +226,7 @@ Deno.serve(async (req) => {
         last_name: supabaseData.last_name_primary ?? undefined,
         email: supabaseData.email_primary ?? undefined,
         phone: supabaseData.phone_primary ?? undefined,
+        manager: manager,
       });
     }
 
@@ -238,6 +243,7 @@ Deno.serve(async (req) => {
           first_name: otherEarner["First Name"],
           last_name: otherEarner["Last Name"],
           email: otherEarner["Email"],
+          manager: manager,
         });
       }
     }
