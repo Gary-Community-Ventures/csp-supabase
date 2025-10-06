@@ -26,7 +26,8 @@ export function acceptParser(value: string): boolean | null {
 }
 
 export function numberOrNullParser(value: string): number | null {
-  return value === "" ? null : Number(value);
+  const cleaned = value.replace(/[^\d.]/g, "");
+  return cleaned === "" ? null : Number(cleaned);
 }
 
 export function remapParser(map: Record<string, string> = {}) {
