@@ -6,7 +6,7 @@ import { isAuthorized } from "../_shared/auth.ts";
 import { Client } from "npm:@hubspot/api-client";
 
 const supabaseUrl = Deno.env.get("SUPABASE_URL");
-const supabaseAnonKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 const sentryDsn = Deno.env.get("SENTRY_DSN");
 const hubspotApiKey = Deno.env.get("HUBSPOT_API_KEY");
 const tazApiKey = Deno.env.get("TAZ_API_KEY");
@@ -17,7 +17,7 @@ const tazSpanishProductId = Deno.env.get("TAZ_SPANISH_PRODUCT_ID");
 
 if (
   !supabaseUrl ||
-  !supabaseAnonKey ||
+  !supabaseServiceKey ||
   !hubspotApiKey ||
   !tazApiKey ||
   !tazHost ||
@@ -32,7 +32,7 @@ if (sentryDsn) {
   Sentry.init({ dsn: sentryDsn });
 }
 
-const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+const supabase = createClient<Database>(supabaseUrl, supabaseServiceKey);
 const hubspot = new Client({ accessToken: hubspotApiKey });
 
 Deno.serve(async (req) => {
@@ -54,10 +54,29 @@ Deno.serve(async (req) => {
       type, // both
       preferred_language, // both
       id, // both
+      submission_id, // Hubspot
       other_adults: other_adults_raw, // background check
     } = data.record;
 
     console.log(id);
+
+    const { data: providerApplicationData, error: providerApplicationError } =
+      await supabase
+        .from("provider_application")
+        .select("tc_tcpa")
+        .eq("submission_id", submission_id)
+        .single();
+
+    if (providerApplicationError !== null) {
+      console.error(providerApplicationError);
+      Sentry.captureException(providerApplicationError);
+      return new Response(
+        "failed application to get provider application data",
+        {
+          status: 500,
+        },
+      );
+    }
 
     await hubspot.crm.contacts.batchApi.upsert({
       inputs: [
@@ -73,12 +92,14 @@ Deno.serve(async (req) => {
             cap_applicant_type: "cap_provider",
             cap_provider_licensed: type !== "ffn" ? "true" : "false",
             provider_id: String(id),
+            // @ts-ignore - hubspot-api-client types are wrong
+            cap___tcpa__provider_: providerApplicationData.tc_tcpa ?? false,
           },
         },
       ],
     });
 
-    if (type !== "ffn") {
+    if (type !== "ffn" || providerApplicationData.tc_tcpa !== true) {
       return new Response(JSON.stringify({ message: "Ok" }), {
         headers: { "Content-Type": "application/json" },
       });

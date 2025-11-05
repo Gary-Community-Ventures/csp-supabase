@@ -5,11 +5,11 @@ import { M } from "./mappings.ts";
 import * as Sentry from "npm:@sentry/deno";
 
 const supabaseUrl = Deno.env.get("SUPABASE_URL");
-const supabaseAnonKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 const jotformApiKey = Deno.env.get("JOTFORM_API_KEY");
 const sentryDsn = Deno.env.get("SENTRY_DSN");
 
-if (!supabaseUrl || !supabaseAnonKey || !jotformApiKey) {
+if (!supabaseUrl || !supabaseServiceKey || !jotformApiKey) {
   throw new Error("Missing environment variables");
 }
 
@@ -17,7 +17,7 @@ if (sentryDsn) {
   Sentry.init({ dsn: sentryDsn });
 }
 
-const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+const supabase = createClient<Database>(supabaseUrl, supabaseServiceKey);
 
 Deno.serve(async (req) => {
   try {

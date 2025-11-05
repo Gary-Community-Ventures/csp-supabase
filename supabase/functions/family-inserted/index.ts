@@ -6,11 +6,11 @@ import { isAuthorized } from "../_shared/auth.ts";
 import { Client } from "npm:@hubspot/api-client";
 
 const supabaseUrl = Deno.env.get("SUPABASE_URL");
-const supabaseAnonKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 const sentryDsn = Deno.env.get("SENTRY_DSN");
 const hubspotApiKey = Deno.env.get("HUBSPOT_API_KEY");
 
-if (!supabaseUrl || !supabaseAnonKey || !hubspotApiKey) {
+if (!supabaseUrl || !supabaseServiceKey || !hubspotApiKey) {
   throw new Error("Missing environment variables");
 }
 
@@ -18,7 +18,7 @@ if (sentryDsn) {
   Sentry.init({ dsn: sentryDsn });
 }
 
-const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+const supabase = createClient<Database>(supabaseUrl, supabaseServiceKey);
 const hubspot = new Client({ accessToken: hubspotApiKey });
 
 Deno.serve(async (req) => {
@@ -43,7 +43,7 @@ Deno.serve(async (req) => {
 
     const { data: familyData, error } = await supabase
       .from("family")
-      .select("language")
+      .select("language, submission_id")
       .eq("id", family_id)
       .single();
 
@@ -51,6 +51,28 @@ Deno.serve(async (req) => {
       console.error(error);
       Sentry.captureException(error);
       return new Response("failed to get family data", { status: 500 });
+    }
+
+    if (familyData.submission_id === null) {
+      const message = "Family does not have a TCPA submitted field";
+      console.log(message);
+      Sentry.captureMessage(message);
+      return new Response(message, { status: 200 });
+    }
+
+    const { data: familyApplicationData, error: familyApplicationError } =
+      await supabase
+        .from("family_application")
+        .select("tc_TCPA")
+        .eq("submission_id", familyData.submission_id)
+        .single();
+
+    if (familyApplicationError !== null) {
+      console.error(error);
+      Sentry.captureException(error);
+      return new Response("failed application to get family data", {
+        status: 500,
+      });
     }
 
     await hubspot.crm.contacts.batchApi.upsert({
@@ -66,6 +88,8 @@ Deno.serve(async (req) => {
             hs_language: familyData.language,
             cap_applicant_type: "cap_family",
             family_id: String(id),
+            // @ts-ignore - hubspot-api-client types are wrong
+            cap___tcpa__family_: familyApplicationData.tc_TCPA ?? false,
           },
         },
       ],
