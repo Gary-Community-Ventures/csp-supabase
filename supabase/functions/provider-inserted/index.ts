@@ -55,28 +55,14 @@ Deno.serve(async (req) => {
       preferred_language, // both
       id, // both
       submission_id, // Hubspot
+      tc_tcpa, // Hubspot
+      status, // Hubspot
+      custom_message, // Hubspot
+      other_background_checks_sent_emails, // background check
       other_adults: other_adults_raw, // background check
     } = data.record;
 
     console.log(id);
-
-    const { data: providerApplicationData, error: providerApplicationError } =
-      await supabase
-        .from("provider_application")
-        .select("tc_tcpa")
-        .eq("submission_id", submission_id)
-        .single();
-
-    if (providerApplicationError !== null) {
-      console.error(providerApplicationError);
-      Sentry.captureException(providerApplicationError);
-      return new Response(
-        "failed application to get provider application data",
-        {
-          status: 500,
-        },
-      );
-    }
 
     await hubspot.crm.contacts.batchApi.upsert({
       inputs: [
@@ -91,15 +77,18 @@ Deno.serve(async (req) => {
             hs_language: preferred_language,
             cap_applicant_type: "cap_provider",
             cap_provider_licensed: type !== "ffn" ? "true" : "false",
-            provider_id: String(id),
+            provider_id: submission_id,
             // @ts-ignore - hubspot-api-client types are wrong
-            cap___tcpa__provider_: providerApplicationData.tc_tcpa ?? false,
+            cap___tcpa__provider_: tc_tcpa ?? false,
+            cap___provider_status: status,
+            cap___provider_user_message: custom_message,
           },
         },
       ],
     });
 
-    if (type !== "ffn" || providerApplicationData.tc_tcpa !== true) {
+    const alreadySentEmails = other_background_checks_sent_emails ?? [];
+    if (type !== "ffn" || tc_tcpa !== true || alreadySentEmails.length > 10) {
       return new Response(JSON.stringify({ message: "Ok" }), {
         headers: { "Content-Type": "application/json" },
       });
@@ -110,32 +99,31 @@ Deno.serve(async (req) => {
         firstName: string;
         lastName: string;
         email: string;
-        phoneNumber?: string;
-        textingEnabled?: true;
       };
       id: string;
     }[] = [];
-    applicants.push({
-      applicantData: {
-        firstName: first_name,
-        lastName: last_name,
-        email: email,
-        phoneNumber: `(${phone.slice(0, 3)}) ${phone.slice(3, 6)}-${phone.slice(6, 10)}`,
-        textingEnabled: true,
-      },
-      id: `${id}-0`,
-    });
 
     const otherAdults = other_adults_raw ?? [];
     for (let i = 0; i < otherAdults.length; i++) {
       const otherAdult = otherAdults[i];
+
+      if (alreadySentEmails.includes(otherAdult["email"])) {
+        continue;
+      }
+
       applicants.push({
         applicantData: {
-          firstName: otherAdult["First Name"],
-          lastName: otherAdult["Last Name"],
-          email: otherAdult["Email"],
+          firstName: otherAdult["firstName"],
+          lastName: otherAdult["lastName"],
+          email: otherAdult["email"],
         },
         id: `${id}-${i}`,
+      });
+    }
+
+    if (applicants.length === 0) {
+      return new Response(JSON.stringify({ message: "Ok" }), {
+        headers: { "Content-Type": "application/json" },
       });
     }
 
@@ -185,6 +173,7 @@ Deno.serve(async (req) => {
         backgroundCheckLinks.push(orderData.quickappApplicantLink);
         fileNumbers.push(orderData.fileNumber);
         orderIds.push(orderData.orderGuid);
+        alreadySentEmails.push(applicant.applicantData.email);
       }
     } catch (error) {
       console.error("Error in provider-inserted function:", error);
@@ -205,6 +194,7 @@ Deno.serve(async (req) => {
         jdp_order_ids: orderIds,
         jdp_file_numbers: fileNumbers,
         jdp_admin_links: adminLinks,
+        other_background_checks_sent_emails: alreadySentEmails,
       })
       .eq("id", id);
 
