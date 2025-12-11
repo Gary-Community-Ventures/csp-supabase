@@ -55,9 +55,11 @@ Deno.serve(async (req) => {
       preferred_language, // both
       id, // both
       other_adults: other_adults_raw, // background check
+      first_payment_received_at, // hubspot
     } = data.record;
 
     console.log(id);
+    console.log('first_payment_received_at', first_payment_received_at);
 
     await hubspot.crm.contacts.batchApi.upsert({
       inputs: [
@@ -73,6 +75,7 @@ Deno.serve(async (req) => {
             cap_applicant_type: "cap_provider",
             cap_provider_licensed: type !== "ffn" ? "true" : "false",
             provider_id: String(id),
+            cap__first_payment_received_date: first_payment_received_at,
           },
         },
       ],
