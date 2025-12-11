@@ -6,7 +6,7 @@ import { isAuthorized } from "../_shared/auth.ts";
 import { Client } from "npm:@hubspot/api-client";
 
 const supabaseUrl = Deno.env.get("SUPABASE_URL");
-const supabaseAnonKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 const sentryDsn = Deno.env.get("SENTRY_DSN");
 const hubspotApiKey = Deno.env.get("HUBSPOT_API_KEY");
 const tazApiKey = Deno.env.get("TAZ_API_KEY");
@@ -17,7 +17,7 @@ const tazSpanishProductId = Deno.env.get("TAZ_SPANISH_PRODUCT_ID");
 
 if (
   !supabaseUrl ||
-  !supabaseAnonKey ||
+  !supabaseServiceKey ||
   !hubspotApiKey ||
   !tazApiKey ||
   !tazHost ||
@@ -32,7 +32,7 @@ if (sentryDsn) {
   Sentry.init({ dsn: sentryDsn });
 }
 
-const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+const supabase = createClient<Database>(supabaseUrl, supabaseServiceKey);
 const hubspot = new Client({ accessToken: hubspotApiKey });
 
 Deno.serve(async (req) => {
@@ -54,6 +54,11 @@ Deno.serve(async (req) => {
       type, // both
       preferred_language, // both
       id, // both
+      submission_id, // Hubspot
+      tc_tcpa, // Hubspot
+      status, // Hubspot
+      custom_message, // Hubspot
+      other_background_checks_sent_emails, // background check
       other_adults: other_adults_raw, // background check
       first_payment_received_at, // hubspot
     } = data.record;
@@ -76,12 +81,17 @@ Deno.serve(async (req) => {
             cap_provider_licensed: type !== "ffn" ? "true" : "false",
             provider_id: String(id),
             cap__first_payment_received_date: first_payment_received_at,
+            // @ts-ignore - hubspot-api-client types are wrong
+            cap___tcpa__provider_: tc_tcpa ?? false,
+            cap___provider_status: status,
+            cap___provider_user_message: custom_message,
           },
         },
       ],
     });
 
-    if (type !== "ffn") {
+    const alreadySentEmails = other_background_checks_sent_emails ?? [];
+    if (type !== "ffn" || tc_tcpa !== true || alreadySentEmails.length > 10) {
       return new Response(JSON.stringify({ message: "Ok" }), {
         headers: { "Content-Type": "application/json" },
       });
@@ -92,32 +102,31 @@ Deno.serve(async (req) => {
         firstName: string;
         lastName: string;
         email: string;
-        phoneNumber?: string;
-        textingEnabled?: true;
       };
       id: string;
     }[] = [];
-    applicants.push({
-      applicantData: {
-        firstName: first_name,
-        lastName: last_name,
-        email: email,
-        phoneNumber: `(${phone.slice(0, 3)}) ${phone.slice(3, 6)}-${phone.slice(6, 10)}`,
-        textingEnabled: true,
-      },
-      id: `${id}-0`,
-    });
 
     const otherAdults = other_adults_raw ?? [];
     for (let i = 0; i < otherAdults.length; i++) {
       const otherAdult = otherAdults[i];
+
+      if (alreadySentEmails.includes(otherAdult["email"])) {
+        continue;
+      }
+
       applicants.push({
         applicantData: {
-          firstName: otherAdult["First Name"],
-          lastName: otherAdult["Last Name"],
-          email: otherAdult["Email"],
+          firstName: otherAdult["firstName"],
+          lastName: otherAdult["lastName"],
+          email: otherAdult["email"],
         },
         id: `${id}-${i}`,
+      });
+    }
+
+    if (applicants.length === 0) {
+      return new Response(JSON.stringify({ message: "Ok" }), {
+        headers: { "Content-Type": "application/json" },
       });
     }
 
@@ -167,6 +176,7 @@ Deno.serve(async (req) => {
         backgroundCheckLinks.push(orderData.quickappApplicantLink);
         fileNumbers.push(orderData.fileNumber);
         orderIds.push(orderData.orderGuid);
+        alreadySentEmails.push(applicant.applicantData.email);
       }
     } catch (error) {
       console.error("Error in provider-inserted function:", error);
@@ -187,6 +197,7 @@ Deno.serve(async (req) => {
         jdp_order_ids: orderIds,
         jdp_file_numbers: fileNumbers,
         jdp_admin_links: adminLinks,
+        other_background_checks_sent_emails: alreadySentEmails,
       })
       .eq("id", id);
 

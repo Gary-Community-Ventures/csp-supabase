@@ -5,7 +5,7 @@ import { M } from "./mappings.ts";
 import * as Sentry from "npm:@sentry/deno";
 
 const supabaseUrl = Deno.env.get("SUPABASE_URL");
-const supabaseAnonKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 const jotformApiKey = Deno.env.get("JOTFORM_API_KEY");
 const sentryDsn = Deno.env.get("SENTRY_DSN");
 const truvClientId = Deno.env.get("TRUV_CLIENT_ID");
@@ -13,7 +13,7 @@ const truvAccessSecret = Deno.env.get("TRUV_ACCESS_SECRET");
 
 if (
   !supabaseUrl ||
-  !supabaseAnonKey ||
+  !supabaseServiceKey ||
   !jotformApiKey ||
   !sentryDsn ||
   !truvClientId ||
@@ -26,7 +26,7 @@ if (sentryDsn) {
   Sentry.init({ dsn: sentryDsn });
 }
 
-const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+const supabase = createClient<Database>(supabaseUrl, supabaseServiceKey);
 
 Deno.serve(async (req) => {
   try {
