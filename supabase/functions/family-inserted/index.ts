@@ -53,7 +53,7 @@ Deno.serve(async (req) => {
     const { data: familyData, error } = await supabase
       .from("family")
       .select(
-        "language, submission_id, tc_tcpa, custom_message, submission_id, child(status, first_name, last_name, monthly_allocation, prorated_allocation), guardian(email, phone_number, family_id, first_name, last_name, type, id)",
+        "language, submission_id, tc_tcpa, custom_message, submission_id, first_payment_sent_at, child(status, first_name, last_name, monthly_allocation, prorated_allocation), guardian(email, phone_number, family_id, first_name, last_name, type, id)",
       )
       .eq("id", family_id)
       .single();
@@ -110,6 +110,9 @@ Deno.serve(async (req) => {
             // @ts-ignore - hubspot type is wrong have a field for this
             cap___child2_prorated_allocation:
               familyData.child[1]?.prorated_allocation ?? "",
+            // @ts-ignore - hubspot type is wrong have a field for this
+            cap__family_payment_first_made_date:
+              familyData.first_payment_sent_at,
           },
         },
       ],

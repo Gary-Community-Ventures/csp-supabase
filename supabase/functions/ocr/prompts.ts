@@ -1,15 +1,7 @@
 import { z } from "npm:zod";
+import { type Prompt, p, kv, context } from "../_shared/prompting.ts";
+import { trainings } from "../_shared/trainings.ts";
 
-export type Prompt = {
-  system: string;
-  user: string;
-};
-function p(...lines: string[]) {
-  return lines.join("\n");
-}
-function kv(key: string, value: string) {
-  return `<${key}>${value}</${key}>`;
-}
 function responseFormat() {
   return p(
     "The response should look like the following. All fields are required:",
@@ -40,15 +32,6 @@ export function parse(res: string) {
   console.log(message, validated);
 
   return { message, validated };
-}
-
-function context() {
-  return p(
-    "The agent is an assistant for a child care subsidy pilot called Childcare Affordability Pilot (CAP).",
-    "The agents job is to review documents and answer questions about them.",
-    `Today's date is ${new Date().toDateString()}.`,
-    "The program is based in Colorado, USA.",
-  );
 }
 
 function agePrompt(rawData: unknown): Prompt {
@@ -546,6 +529,78 @@ export function w9Prompt(rawData: unknown): Prompt {
   };
 }
 
+export function trainingPrompt(rawData: unknown): Prompt {
+  const schema = z.object({
+    name: z.string(),
+  });
+
+  const data = schema.parse(rawData);
+
+  return {
+    system: p(
+      context(),
+      "The document that the agent is reviewing is used to prove that a childcare provider completed one of the required trainings.",
+      "The agent will be given the provider's name and the document (in a variety of formats).",
+      "The agent will say if the document proves completion of one of the trainings listed.",
+      "The agent will verify that the name on the certificate matches the provider's name.",
+      "The agent will include which training was completed (by name) if validated.",
+      "The agent will summarize the key information from the certificate including the person's name, training name, completion date, and issuing organization.",
+      "The agent will flag if the certificate appears expired, if the training name does not match any of the provided trainings, or if the name on the certificate does not match the provider's name.",
+      "The request will look like:",
+      kv("provider-name", "[First Last]"),
+      "Here is a list of trainings that need to be completed by the childcare provider:",
+      kv(
+        "trainings",
+        p(
+          ...Object.entries(trainings).map(([code, training]) =>
+            kv(
+              "training",
+              p(
+                kv("name", training.name),
+                kv("code", code),
+                kv("description", training.description),
+              ),
+            ),
+          ),
+        ),
+      ),
+      responseFormat(),
+      "Examples (the request will also include a document):",
+      example(
+        kv("provider-name", "Sarah Johnson"),
+        "The certificate shows Sarah Johnson completed 'Adult, Child, and Baby First Aid/CPR/AED Online' from the American Red Cross on March 15, 2024. This matches the 'American Red Cross: Adult, Child, and Baby First Aid/CPR/AED Online' training.",
+        true,
+      ),
+      example(
+        kv("provider-name", "Sarah Johnson"),
+        "The certificate shows Sarah Johnson completed 'Introduction to First Aid and CPR' through PDIS on June 1, 2024. This matches the 'Introduction to First Aid and CPR' training.",
+        true,
+      ),
+      example(
+        kv("provider-name", "Sarah Johnson"),
+        "The certificate shows Michael Smith completed 'Introduction to First Aid and CPR' through PDIS on June 1, 2024. The name on the certificate does not match the provider's name (Sarah Johnson).",
+        false,
+      ),
+      example(
+        kv("provider-name", "Sarah Johnson"),
+        "The certificate shows completion of 'Advanced Pediatric Care' which does not match any of the trainings in the provided list.",
+        false,
+      ),
+      example(
+        kv("provider-name", "Sarah Johnson"),
+        "The document provided does not appear to be a valid training certificate.",
+        false,
+      ),
+      example(
+        kv("provider-name", "Sarah Johnson"),
+        "The certificate shows Sarah Johnson completed 'Infant Safe Sleep Practices' through PDIS, but the certificate is dated January 2020 which may be outdated.",
+        false,
+      ),
+    ),
+    user: kv("provider-name", data.name),
+  };
+}
+
 export const PROMPTS = {
   age: agePrompt,
   income: incomePrompt,
@@ -554,4 +609,5 @@ export const PROMPTS = {
   id: idPrompt,
   cpr: cprPrompt,
   w9: w9Prompt,
+  training: trainingPrompt,
 };

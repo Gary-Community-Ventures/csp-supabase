@@ -79,6 +79,33 @@ export type Database = {
           },
         ]
       }
+      cap_application_status: {
+        Row: {
+          application_type: string
+          closed_message: string | null
+          closed_message_arabic: string | null
+          closed_message_spanish: string | null
+          is_open: boolean
+          updated_at: string | null
+        }
+        Insert: {
+          application_type: string
+          closed_message?: string | null
+          closed_message_arabic?: string | null
+          closed_message_spanish?: string | null
+          is_open?: boolean
+          updated_at?: string | null
+        }
+        Update: {
+          application_type?: string
+          closed_message?: string | null
+          closed_message_arabic?: string | null
+          closed_message_spanish?: string | null
+          is_open?: boolean
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       cap_family_application: {
         Row: {
           add_additional: boolean | null
@@ -424,6 +451,371 @@ export type Database = {
         }
         Relationships: []
       }
+      cap_family_application_snapshot: {
+        Row: {
+          add_additional: boolean | null
+          additional_child: boolean | null
+          address_1_additional: string | null
+          address_1_primary: string | null
+          address_2_additional: string | null
+          address_2_primary: string | null
+          approved: boolean | null
+          approved_at: string | null
+          assets_one_million: boolean | null
+          child_care_length_additional: string | null
+          child_care_length_primary: string | null
+          child_current_care_additional: Json | null
+          child_current_care_primary: Json | null
+          child_current_programs_additional: Json | null
+          child_current_programs_primary: Json | null
+          child_disabled_additional: boolean | null
+          child_disabled_primary: boolean | null
+          child_dob_additional: string | null
+          child_dob_primary: string | null
+          child_first_name_additional: string | null
+          child_first_name_primary: string | null
+          child_hours_per_week_additional: string | null
+          child_hours_per_week_primary: string | null
+          child_language_additional: Json | null
+          child_language_primary: Json | null
+          child_last_name_additional: string | null
+          child_last_name_primary: string | null
+          child_provider_name_additional: string | null
+          child_provider_name_primary: string | null
+          child_race_ethnicity_additional: Json | null
+          child_race_ethnicity_primary: Json | null
+          child_receiving_care_additional: boolean | null
+          child_receiving_care_primary: boolean | null
+          child_satisfaction_current_care_additional: string | null
+          child_satisfaction_current_care_explanation_additional: string | null
+          child_satisfaction_current_care_explanation_primary: string | null
+          child_satisfaction_current_care_primary: string | null
+          child_starting_next_month_additional: boolean | null
+          child_starting_next_month_primary: boolean | null
+          city_additional: string | null
+          city_primary: string | null
+          clerk_user_id: string | null
+          county_primary: string | null
+          created_at: string
+          current_benefits_preeligibility: Json | null
+          current_benefits_proof: string[] | null
+          current_benefits_proof_files: Json | null
+          current_childcare_benefits: Json | null
+          dob_additional: string | null
+          dob_primary: string | null
+          email_additional: string | null
+          email_primary: string | null
+          family_snapshot_created_at: string
+          family_snapshot_id: number
+          ffn_attestation: string | null
+          first_name_additional: string | null
+          first_name_primary: string | null
+          household_size: number | null
+          income_monthly_yearly: string | null
+          income_yearly: number | null
+          is_colorado_resident: boolean | null
+          is_test: boolean | null
+          last_name_additional: string | null
+          last_name_primary: string | null
+          last_update_date: string | null
+          latitude_primary: number | null
+          link_id: string | null
+          longitude_primary: number | null
+          new_submitted_at: string | null
+          old_submitted_at: string | null
+          original_family_id: number
+          other_income_earners: Json | null
+          other_parent_email: string | null
+          other_parent_first_name: string | null
+          other_parent_last_name: string | null
+          other_parent_phone: string | null
+          phone_additional: string | null
+          phone_primary: string | null
+          photo_release: boolean | null
+          preferred_language: string | null
+          primary_has_income: boolean | null
+          proof_of_income: string[] | null
+          proof_of_income_files: Json | null
+          proof_of_residence: string[] | null
+          proof_of_residence_files: Json | null
+          race_ethnicity_additional: Json | null
+          race_ethnicity_primary: Json | null
+          referrer_cap_provider: string | null
+          signature: string | null
+          spouse_has_income: boolean | null
+          spouse_proof_of_income_files: Json | null
+          state_additional: string | null
+          state_primary: string | null
+          submission_edit_url: string | null
+          submission_id: string | null
+          submission_ip: string | null
+          submission_url: string | null
+          submitted_at: string | null
+          tc_change_providers: boolean | null
+          tc_dependent_on_CAP_approval: boolean | null
+          tc_income_verification: boolean | null
+          tc_privacy_policy: boolean | null
+          tc_responsible_for_finding_care: boolean | null
+          tc_TCPA: boolean | null
+          tc_terms_and_conditions: boolean | null
+          timer: string | null
+          truv_id_additional: string | null
+          truv_id_primary: string | null
+          truv_ids: string[] | null
+          updated_at: string | null
+          verification_child_age: string[] | null
+          verification_child_age_files: Json | null
+          waitlist: boolean | null
+          why_need_child_care: Json | null
+          zip_additional: string | null
+          zip_primary: string | null
+        }
+        Insert: {
+          add_additional?: boolean | null
+          additional_child?: boolean | null
+          address_1_additional?: string | null
+          address_1_primary?: string | null
+          address_2_additional?: string | null
+          address_2_primary?: string | null
+          approved?: boolean | null
+          approved_at?: string | null
+          assets_one_million?: boolean | null
+          child_care_length_additional?: string | null
+          child_care_length_primary?: string | null
+          child_current_care_additional?: Json | null
+          child_current_care_primary?: Json | null
+          child_current_programs_additional?: Json | null
+          child_current_programs_primary?: Json | null
+          child_disabled_additional?: boolean | null
+          child_disabled_primary?: boolean | null
+          child_dob_additional?: string | null
+          child_dob_primary?: string | null
+          child_first_name_additional?: string | null
+          child_first_name_primary?: string | null
+          child_hours_per_week_additional?: string | null
+          child_hours_per_week_primary?: string | null
+          child_language_additional?: Json | null
+          child_language_primary?: Json | null
+          child_last_name_additional?: string | null
+          child_last_name_primary?: string | null
+          child_provider_name_additional?: string | null
+          child_provider_name_primary?: string | null
+          child_race_ethnicity_additional?: Json | null
+          child_race_ethnicity_primary?: Json | null
+          child_receiving_care_additional?: boolean | null
+          child_receiving_care_primary?: boolean | null
+          child_satisfaction_current_care_additional?: string | null
+          child_satisfaction_current_care_explanation_additional?: string | null
+          child_satisfaction_current_care_explanation_primary?: string | null
+          child_satisfaction_current_care_primary?: string | null
+          child_starting_next_month_additional?: boolean | null
+          child_starting_next_month_primary?: boolean | null
+          city_additional?: string | null
+          city_primary?: string | null
+          clerk_user_id?: string | null
+          county_primary?: string | null
+          created_at: string
+          current_benefits_preeligibility?: Json | null
+          current_benefits_proof?: string[] | null
+          current_benefits_proof_files?: Json | null
+          current_childcare_benefits?: Json | null
+          dob_additional?: string | null
+          dob_primary?: string | null
+          email_additional?: string | null
+          email_primary?: string | null
+          family_snapshot_created_at?: string
+          family_snapshot_id?: number
+          ffn_attestation?: string | null
+          first_name_additional?: string | null
+          first_name_primary?: string | null
+          household_size?: number | null
+          income_monthly_yearly?: string | null
+          income_yearly?: number | null
+          is_colorado_resident?: boolean | null
+          is_test?: boolean | null
+          last_name_additional?: string | null
+          last_name_primary?: string | null
+          last_update_date?: string | null
+          latitude_primary?: number | null
+          link_id?: string | null
+          longitude_primary?: number | null
+          new_submitted_at?: string | null
+          old_submitted_at?: string | null
+          original_family_id: number
+          other_income_earners?: Json | null
+          other_parent_email?: string | null
+          other_parent_first_name?: string | null
+          other_parent_last_name?: string | null
+          other_parent_phone?: string | null
+          phone_additional?: string | null
+          phone_primary?: string | null
+          photo_release?: boolean | null
+          preferred_language?: string | null
+          primary_has_income?: boolean | null
+          proof_of_income?: string[] | null
+          proof_of_income_files?: Json | null
+          proof_of_residence?: string[] | null
+          proof_of_residence_files?: Json | null
+          race_ethnicity_additional?: Json | null
+          race_ethnicity_primary?: Json | null
+          referrer_cap_provider?: string | null
+          signature?: string | null
+          spouse_has_income?: boolean | null
+          spouse_proof_of_income_files?: Json | null
+          state_additional?: string | null
+          state_primary?: string | null
+          submission_edit_url?: string | null
+          submission_id?: string | null
+          submission_ip?: string | null
+          submission_url?: string | null
+          submitted_at?: string | null
+          tc_change_providers?: boolean | null
+          tc_dependent_on_CAP_approval?: boolean | null
+          tc_income_verification?: boolean | null
+          tc_privacy_policy?: boolean | null
+          tc_responsible_for_finding_care?: boolean | null
+          tc_TCPA?: boolean | null
+          tc_terms_and_conditions?: boolean | null
+          timer?: string | null
+          truv_id_additional?: string | null
+          truv_id_primary?: string | null
+          truv_ids?: string[] | null
+          updated_at?: string | null
+          verification_child_age?: string[] | null
+          verification_child_age_files?: Json | null
+          waitlist?: boolean | null
+          why_need_child_care?: Json | null
+          zip_additional?: string | null
+          zip_primary?: string | null
+        }
+        Update: {
+          add_additional?: boolean | null
+          additional_child?: boolean | null
+          address_1_additional?: string | null
+          address_1_primary?: string | null
+          address_2_additional?: string | null
+          address_2_primary?: string | null
+          approved?: boolean | null
+          approved_at?: string | null
+          assets_one_million?: boolean | null
+          child_care_length_additional?: string | null
+          child_care_length_primary?: string | null
+          child_current_care_additional?: Json | null
+          child_current_care_primary?: Json | null
+          child_current_programs_additional?: Json | null
+          child_current_programs_primary?: Json | null
+          child_disabled_additional?: boolean | null
+          child_disabled_primary?: boolean | null
+          child_dob_additional?: string | null
+          child_dob_primary?: string | null
+          child_first_name_additional?: string | null
+          child_first_name_primary?: string | null
+          child_hours_per_week_additional?: string | null
+          child_hours_per_week_primary?: string | null
+          child_language_additional?: Json | null
+          child_language_primary?: Json | null
+          child_last_name_additional?: string | null
+          child_last_name_primary?: string | null
+          child_provider_name_additional?: string | null
+          child_provider_name_primary?: string | null
+          child_race_ethnicity_additional?: Json | null
+          child_race_ethnicity_primary?: Json | null
+          child_receiving_care_additional?: boolean | null
+          child_receiving_care_primary?: boolean | null
+          child_satisfaction_current_care_additional?: string | null
+          child_satisfaction_current_care_explanation_additional?: string | null
+          child_satisfaction_current_care_explanation_primary?: string | null
+          child_satisfaction_current_care_primary?: string | null
+          child_starting_next_month_additional?: boolean | null
+          child_starting_next_month_primary?: boolean | null
+          city_additional?: string | null
+          city_primary?: string | null
+          clerk_user_id?: string | null
+          county_primary?: string | null
+          created_at?: string
+          current_benefits_preeligibility?: Json | null
+          current_benefits_proof?: string[] | null
+          current_benefits_proof_files?: Json | null
+          current_childcare_benefits?: Json | null
+          dob_additional?: string | null
+          dob_primary?: string | null
+          email_additional?: string | null
+          email_primary?: string | null
+          family_snapshot_created_at?: string
+          family_snapshot_id?: number
+          ffn_attestation?: string | null
+          first_name_additional?: string | null
+          first_name_primary?: string | null
+          household_size?: number | null
+          income_monthly_yearly?: string | null
+          income_yearly?: number | null
+          is_colorado_resident?: boolean | null
+          is_test?: boolean | null
+          last_name_additional?: string | null
+          last_name_primary?: string | null
+          last_update_date?: string | null
+          latitude_primary?: number | null
+          link_id?: string | null
+          longitude_primary?: number | null
+          new_submitted_at?: string | null
+          old_submitted_at?: string | null
+          original_family_id?: number
+          other_income_earners?: Json | null
+          other_parent_email?: string | null
+          other_parent_first_name?: string | null
+          other_parent_last_name?: string | null
+          other_parent_phone?: string | null
+          phone_additional?: string | null
+          phone_primary?: string | null
+          photo_release?: boolean | null
+          preferred_language?: string | null
+          primary_has_income?: boolean | null
+          proof_of_income?: string[] | null
+          proof_of_income_files?: Json | null
+          proof_of_residence?: string[] | null
+          proof_of_residence_files?: Json | null
+          race_ethnicity_additional?: Json | null
+          race_ethnicity_primary?: Json | null
+          referrer_cap_provider?: string | null
+          signature?: string | null
+          spouse_has_income?: boolean | null
+          spouse_proof_of_income_files?: Json | null
+          state_additional?: string | null
+          state_primary?: string | null
+          submission_edit_url?: string | null
+          submission_id?: string | null
+          submission_ip?: string | null
+          submission_url?: string | null
+          submitted_at?: string | null
+          tc_change_providers?: boolean | null
+          tc_dependent_on_CAP_approval?: boolean | null
+          tc_income_verification?: boolean | null
+          tc_privacy_policy?: boolean | null
+          tc_responsible_for_finding_care?: boolean | null
+          tc_TCPA?: boolean | null
+          tc_terms_and_conditions?: boolean | null
+          timer?: string | null
+          truv_id_additional?: string | null
+          truv_id_primary?: string | null
+          truv_ids?: string[] | null
+          updated_at?: string | null
+          verification_child_age?: string[] | null
+          verification_child_age_files?: Json | null
+          waitlist?: boolean | null
+          why_need_child_care?: Json | null
+          zip_additional?: string | null
+          zip_primary?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_original_family_application"
+            columns: ["original_family_id"]
+            isOneToOne: false
+            referencedRelation: "cap_family_application"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cap_provider_application: {
         Row: {
           accepted_forms_of_payment: Json | null
@@ -520,6 +912,7 @@ export type Database = {
           tc_terms_and_conditions: boolean | null
           tc_voluntary_participation: boolean | null
           time_tracker: string | null
+          training_upload_files: Json | null
           updated_at: string | null
           w9: string[] | null
           w9_files: Json | null
@@ -621,6 +1014,7 @@ export type Database = {
           tc_terms_and_conditions?: boolean | null
           tc_voluntary_participation?: boolean | null
           time_tracker?: string | null
+          training_upload_files?: Json | null
           updated_at?: string | null
           w9?: string[] | null
           w9_files?: Json | null
@@ -722,6 +1116,7 @@ export type Database = {
           tc_terms_and_conditions?: boolean | null
           tc_voluntary_participation?: boolean | null
           time_tracker?: string | null
+          training_upload_files?: Json | null
           updated_at?: string | null
           w9?: string[] | null
           w9_files?: Json | null
@@ -729,6 +1124,332 @@ export type Database = {
           zip?: string | null
         }
         Relationships: []
+      }
+      cap_provider_application_snapshot: {
+        Row: {
+          accepted_forms_of_payment: Json | null
+          address_1: string | null
+          address_2: string | null
+          address_county: string | null
+          address_latitude: number | null
+          address_longitude: number | null
+          application_submitted_at: string | null
+          attendance_tracking_system: Json | null
+          attestation_signature: string | null
+          benefits_impact_follow_up: boolean | null
+          car_failure_to_report: string | null
+          car_immediately_report: string | null
+          care_location_address_1: string | null
+          care_location_address_2: string | null
+          care_location_city: string | null
+          care_location_county: string | null
+          care_location_latitude: number | null
+          care_location_longitude: number | null
+          care_location_state: string | null
+          care_location_zip: string | null
+          care_setting: string | null
+          cares_for_disabled: boolean | null
+          ccpr_activities: string | null
+          ccpr_materials_and_equipment: string | null
+          ccpr_meals: string | null
+          ccpr_medications: string | null
+          ccpr_transportation: string | null
+          children_under_2: number | null
+          city: string | null
+          clerk_user_id: string | null
+          cpr_certified: string | null
+          cpr_upload: string[] | null
+          cpr_upload_files: Json | null
+          created_at: string
+          current_benefits: Json | null
+          email: string | null
+          first_name: string | null
+          gpqc_capabilities: string | null
+          gpqc_children_removed: string | null
+          gpqc_experienced: string | null
+          gpqc_parental_access: string | null
+          gpqc_punishment: string | null
+          has_other_adults: boolean | null
+          hsce_communicable_diseases: string | null
+          hsce_disasters: string | null
+          hsce_emergencies: string | null
+          hsce_play_areas: string | null
+          hsce_protect_from_dangers: string | null
+          hsce_working_detectors: string | null
+          id_upload: Json | null
+          id_upload_files: Json | null
+          is_test: boolean | null
+          last_name: string | null
+          last_update_date: string | null
+          license_name: string | null
+          license_number: string | null
+          license_type: string | null
+          licensed: boolean | null
+          link_id: string | null
+          monthly_rate_0_18: string | null
+          monthly_rate_19_36: string | null
+          multiple_families: boolean | null
+          new_application_submitted_at: string | null
+          number_of_children: number | null
+          old_application_submitted_at: string | null
+          original_provider_id: number
+          other_adults: Json | null
+          pay_per_month: number | null
+          pay_rate: string | null
+          pay_rate_type: string | null
+          pay_types: Json | null
+          phone: string | null
+          preferred_language: string | null
+          provider_snapshot_created_at: string
+          provider_snapshot_id: number
+          referrer_cap_family: string | null
+          related_to_all_children: boolean | null
+          related_to_relationship: string | null
+          related_to_some_children: boolean | null
+          satisfaction_current_experience: string | null
+          satisfaction_current_experience_explanation: string | null
+          satisfaction_current_pay: string | null
+          signature: string | null
+          ssn_or_itin: boolean | null
+          state: string | null
+          submission_edit_url: string | null
+          submission_id: string | null
+          submission_ip: string | null
+          submission_url: string | null
+          tc_accurate_and_truthful: boolean | null
+          tc_asked_questions: boolean | null
+          tc_background_check: boolean | null
+          tc_privacy_policy: boolean | null
+          tc_read_form: boolean | null
+          tc_tcpa: boolean | null
+          tc_terms_and_conditions: boolean | null
+          tc_voluntary_participation: boolean | null
+          time_tracker: string | null
+          updated_at: string | null
+          w9: string[] | null
+          w9_files: Json | null
+          when_families_pay: string | null
+          zip: string | null
+        }
+        Insert: {
+          accepted_forms_of_payment?: Json | null
+          address_1?: string | null
+          address_2?: string | null
+          address_county?: string | null
+          address_latitude?: number | null
+          address_longitude?: number | null
+          application_submitted_at?: string | null
+          attendance_tracking_system?: Json | null
+          attestation_signature?: string | null
+          benefits_impact_follow_up?: boolean | null
+          car_failure_to_report?: string | null
+          car_immediately_report?: string | null
+          care_location_address_1?: string | null
+          care_location_address_2?: string | null
+          care_location_city?: string | null
+          care_location_county?: string | null
+          care_location_latitude?: number | null
+          care_location_longitude?: number | null
+          care_location_state?: string | null
+          care_location_zip?: string | null
+          care_setting?: string | null
+          cares_for_disabled?: boolean | null
+          ccpr_activities?: string | null
+          ccpr_materials_and_equipment?: string | null
+          ccpr_meals?: string | null
+          ccpr_medications?: string | null
+          ccpr_transportation?: string | null
+          children_under_2?: number | null
+          city?: string | null
+          clerk_user_id?: string | null
+          cpr_certified?: string | null
+          cpr_upload?: string[] | null
+          cpr_upload_files?: Json | null
+          created_at: string
+          current_benefits?: Json | null
+          email?: string | null
+          first_name?: string | null
+          gpqc_capabilities?: string | null
+          gpqc_children_removed?: string | null
+          gpqc_experienced?: string | null
+          gpqc_parental_access?: string | null
+          gpqc_punishment?: string | null
+          has_other_adults?: boolean | null
+          hsce_communicable_diseases?: string | null
+          hsce_disasters?: string | null
+          hsce_emergencies?: string | null
+          hsce_play_areas?: string | null
+          hsce_protect_from_dangers?: string | null
+          hsce_working_detectors?: string | null
+          id_upload?: Json | null
+          id_upload_files?: Json | null
+          is_test?: boolean | null
+          last_name?: string | null
+          last_update_date?: string | null
+          license_name?: string | null
+          license_number?: string | null
+          license_type?: string | null
+          licensed?: boolean | null
+          link_id?: string | null
+          monthly_rate_0_18?: string | null
+          monthly_rate_19_36?: string | null
+          multiple_families?: boolean | null
+          new_application_submitted_at?: string | null
+          number_of_children?: number | null
+          old_application_submitted_at?: string | null
+          original_provider_id: number
+          other_adults?: Json | null
+          pay_per_month?: number | null
+          pay_rate?: string | null
+          pay_rate_type?: string | null
+          pay_types?: Json | null
+          phone?: string | null
+          preferred_language?: string | null
+          provider_snapshot_created_at?: string
+          provider_snapshot_id?: number
+          referrer_cap_family?: string | null
+          related_to_all_children?: boolean | null
+          related_to_relationship?: string | null
+          related_to_some_children?: boolean | null
+          satisfaction_current_experience?: string | null
+          satisfaction_current_experience_explanation?: string | null
+          satisfaction_current_pay?: string | null
+          signature?: string | null
+          ssn_or_itin?: boolean | null
+          state?: string | null
+          submission_edit_url?: string | null
+          submission_id?: string | null
+          submission_ip?: string | null
+          submission_url?: string | null
+          tc_accurate_and_truthful?: boolean | null
+          tc_asked_questions?: boolean | null
+          tc_background_check?: boolean | null
+          tc_privacy_policy?: boolean | null
+          tc_read_form?: boolean | null
+          tc_tcpa?: boolean | null
+          tc_terms_and_conditions?: boolean | null
+          tc_voluntary_participation?: boolean | null
+          time_tracker?: string | null
+          updated_at?: string | null
+          w9?: string[] | null
+          w9_files?: Json | null
+          when_families_pay?: string | null
+          zip?: string | null
+        }
+        Update: {
+          accepted_forms_of_payment?: Json | null
+          address_1?: string | null
+          address_2?: string | null
+          address_county?: string | null
+          address_latitude?: number | null
+          address_longitude?: number | null
+          application_submitted_at?: string | null
+          attendance_tracking_system?: Json | null
+          attestation_signature?: string | null
+          benefits_impact_follow_up?: boolean | null
+          car_failure_to_report?: string | null
+          car_immediately_report?: string | null
+          care_location_address_1?: string | null
+          care_location_address_2?: string | null
+          care_location_city?: string | null
+          care_location_county?: string | null
+          care_location_latitude?: number | null
+          care_location_longitude?: number | null
+          care_location_state?: string | null
+          care_location_zip?: string | null
+          care_setting?: string | null
+          cares_for_disabled?: boolean | null
+          ccpr_activities?: string | null
+          ccpr_materials_and_equipment?: string | null
+          ccpr_meals?: string | null
+          ccpr_medications?: string | null
+          ccpr_transportation?: string | null
+          children_under_2?: number | null
+          city?: string | null
+          clerk_user_id?: string | null
+          cpr_certified?: string | null
+          cpr_upload?: string[] | null
+          cpr_upload_files?: Json | null
+          created_at?: string
+          current_benefits?: Json | null
+          email?: string | null
+          first_name?: string | null
+          gpqc_capabilities?: string | null
+          gpqc_children_removed?: string | null
+          gpqc_experienced?: string | null
+          gpqc_parental_access?: string | null
+          gpqc_punishment?: string | null
+          has_other_adults?: boolean | null
+          hsce_communicable_diseases?: string | null
+          hsce_disasters?: string | null
+          hsce_emergencies?: string | null
+          hsce_play_areas?: string | null
+          hsce_protect_from_dangers?: string | null
+          hsce_working_detectors?: string | null
+          id_upload?: Json | null
+          id_upload_files?: Json | null
+          is_test?: boolean | null
+          last_name?: string | null
+          last_update_date?: string | null
+          license_name?: string | null
+          license_number?: string | null
+          license_type?: string | null
+          licensed?: boolean | null
+          link_id?: string | null
+          monthly_rate_0_18?: string | null
+          monthly_rate_19_36?: string | null
+          multiple_families?: boolean | null
+          new_application_submitted_at?: string | null
+          number_of_children?: number | null
+          old_application_submitted_at?: string | null
+          original_provider_id?: number
+          other_adults?: Json | null
+          pay_per_month?: number | null
+          pay_rate?: string | null
+          pay_rate_type?: string | null
+          pay_types?: Json | null
+          phone?: string | null
+          preferred_language?: string | null
+          provider_snapshot_created_at?: string
+          provider_snapshot_id?: number
+          referrer_cap_family?: string | null
+          related_to_all_children?: boolean | null
+          related_to_relationship?: string | null
+          related_to_some_children?: boolean | null
+          satisfaction_current_experience?: string | null
+          satisfaction_current_experience_explanation?: string | null
+          satisfaction_current_pay?: string | null
+          signature?: string | null
+          ssn_or_itin?: boolean | null
+          state?: string | null
+          submission_edit_url?: string | null
+          submission_id?: string | null
+          submission_ip?: string | null
+          submission_url?: string | null
+          tc_accurate_and_truthful?: boolean | null
+          tc_asked_questions?: boolean | null
+          tc_background_check?: boolean | null
+          tc_privacy_policy?: boolean | null
+          tc_read_form?: boolean | null
+          tc_tcpa?: boolean | null
+          tc_terms_and_conditions?: boolean | null
+          tc_voluntary_participation?: boolean | null
+          time_tracker?: string | null
+          updated_at?: string | null
+          w9?: string[] | null
+          w9_files?: Json | null
+          when_families_pay?: string | null
+          zip?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_original_provider_application"
+            columns: ["original_provider_id"]
+            isOneToOne: false
+            referencedRelation: "cap_provider_application"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       child: {
         Row: {
@@ -738,6 +1459,8 @@ export type Database = {
           created_at: string
           current_care: Json | null
           current_childcare_programs: Json | null
+          decision_log: string[] | null
+          disabled: boolean | null
           dob: string | null
           family_id: number | null
           first_name: string | null
@@ -755,6 +1478,7 @@ export type Database = {
           prorated_allocation: number
           provider_name: string | null
           race_ethnicity: Json | null
+          review_started_at: string[] | null
           status: Database["public"]["Enums"]["Status"]
           waitlist: boolean | null
           wishlist: boolean | null
@@ -766,6 +1490,8 @@ export type Database = {
           created_at?: string
           current_care?: Json | null
           current_childcare_programs?: Json | null
+          decision_log?: string[] | null
+          disabled?: boolean | null
           dob?: string | null
           family_id?: number | null
           first_name?: string | null
@@ -783,6 +1509,7 @@ export type Database = {
           prorated_allocation?: number
           provider_name?: string | null
           race_ethnicity?: Json | null
+          review_started_at?: string[] | null
           status?: Database["public"]["Enums"]["Status"]
           waitlist?: boolean | null
           wishlist?: boolean | null
@@ -794,6 +1521,8 @@ export type Database = {
           created_at?: string
           current_care?: Json | null
           current_childcare_programs?: Json | null
+          decision_log?: string[] | null
+          disabled?: boolean | null
           dob?: string | null
           family_id?: number | null
           first_name?: string | null
@@ -811,6 +1540,7 @@ export type Database = {
           prorated_allocation?: number
           provider_name?: string | null
           race_ethnicity?: Json | null
+          review_started_at?: string[] | null
           status?: Database["public"]["Enums"]["Status"]
           waitlist?: boolean | null
           wishlist?: boolean | null
@@ -1046,6 +1776,7 @@ export type Database = {
           application_reviewed_at: string | null
           approved_at: string | null
           assets_one_million: boolean | null
+          assignee: string | null
           benefits_verified_at: string | null
           clerk_user_id: string | null
           created_at: string
@@ -1053,9 +1784,10 @@ export type Database = {
           current_benefits_proof_files: Json | null
           custom_message: string | null
           custom_message_type: Database["public"]["Enums"]["Custom Message Type"]
-          decision_log: string[] | null
+          first_payment_sent_at: string | null
           had_error_at: string | null
           id: number
+          income_frequency: string | null
           income_verification_submitted_at: string | null
           income_verified_at: string | null
           is_test: boolean | null
@@ -1082,6 +1814,7 @@ export type Database = {
           post_payment_survey_received_at: string | null
           post_payment_survey_reminder_at: string | null
           post_payment_survey_sent_at: string | null
+          primary_has_income: boolean | null
           proof_of_income_files: Json | null
           proof_of_residence_files: Json | null
           provider_approved_at: string | null
@@ -1096,6 +1829,7 @@ export type Database = {
           tc_tcpa: boolean | null
           verification_child_age_files: Json | null
           waitlist: boolean | null
+          why_need_child_care: Json | null
           yearly_income: number | null
           zip: string | null
         }
@@ -1103,6 +1837,7 @@ export type Database = {
           application_reviewed_at?: string | null
           approved_at?: string | null
           assets_one_million?: boolean | null
+          assignee?: string | null
           benefits_verified_at?: string | null
           clerk_user_id?: string | null
           created_at?: string
@@ -1110,9 +1845,10 @@ export type Database = {
           current_benefits_proof_files?: Json | null
           custom_message?: string | null
           custom_message_type?: Database["public"]["Enums"]["Custom Message Type"]
-          decision_log?: string[] | null
+          first_payment_sent_at?: string | null
           had_error_at?: string | null
           id?: number
+          income_frequency?: string | null
           income_verification_submitted_at?: string | null
           income_verified_at?: string | null
           is_test?: boolean | null
@@ -1139,6 +1875,7 @@ export type Database = {
           post_payment_survey_received_at?: string | null
           post_payment_survey_reminder_at?: string | null
           post_payment_survey_sent_at?: string | null
+          primary_has_income?: boolean | null
           proof_of_income_files?: Json | null
           proof_of_residence_files?: Json | null
           provider_approved_at?: string | null
@@ -1153,6 +1890,7 @@ export type Database = {
           tc_tcpa?: boolean | null
           verification_child_age_files?: Json | null
           waitlist?: boolean | null
+          why_need_child_care?: Json | null
           yearly_income?: number | null
           zip?: string | null
         }
@@ -1160,6 +1898,7 @@ export type Database = {
           application_reviewed_at?: string | null
           approved_at?: string | null
           assets_one_million?: boolean | null
+          assignee?: string | null
           benefits_verified_at?: string | null
           clerk_user_id?: string | null
           created_at?: string
@@ -1167,9 +1906,10 @@ export type Database = {
           current_benefits_proof_files?: Json | null
           custom_message?: string | null
           custom_message_type?: Database["public"]["Enums"]["Custom Message Type"]
-          decision_log?: string[] | null
+          first_payment_sent_at?: string | null
           had_error_at?: string | null
           id?: number
+          income_frequency?: string | null
           income_verification_submitted_at?: string | null
           income_verified_at?: string | null
           is_test?: boolean | null
@@ -1196,6 +1936,7 @@ export type Database = {
           post_payment_survey_received_at?: string | null
           post_payment_survey_reminder_at?: string | null
           post_payment_survey_sent_at?: string | null
+          primary_has_income?: boolean | null
           proof_of_income_files?: Json | null
           proof_of_residence_files?: Json | null
           provider_approved_at?: string | null
@@ -1210,6 +1951,7 @@ export type Database = {
           tc_tcpa?: boolean | null
           verification_child_age_files?: Json | null
           waitlist?: boolean | null
+          why_need_child_care?: Json | null
           yearly_income?: number | null
           zip?: string | null
         }
@@ -2191,6 +2933,7 @@ export type Database = {
           application_reviewed_at: string | null
           approved: boolean | null
           approved_at: string | null
+          assignee: string | null
           attendance_tracking_system: Json | null
           background_check_links: string[] | null
           background_check_passed_at: string | null
@@ -2226,10 +2969,12 @@ export type Database = {
           current_benefits: Json | null
           custom_message: string | null
           custom_message_type: Database["public"]["Enums"]["Custom Message Type"]
+          decision_log: string[] | null
           email: string | null
           enterprise_zone_type: string | null
           family_invited_at: string | null
           first_name: string | null
+          first_payment_received_at: string | null
           gpqc_capabilities: string | null
           gpqc_children_removed: string | null
           gpqc_experienced: string | null
@@ -2268,6 +3013,7 @@ export type Database = {
           number_of_children: number | null
           onboarding_call_at: string | null
           other_adults: Json | null
+          other_adults_background_check_completed_timestamps: string[] | null
           other_background_checks_sent_emails: string[] | null
           owner: string | null
           participation_survey_1_received_at: string | null
@@ -2281,6 +3027,7 @@ export type Database = {
           participation_survey_3_sent_at: string | null
           pay_per_month: number | null
           pay_rate: string | null
+          pay_rate_type: string | null
           pay_types: Json | null
           payment_enabled: boolean
           payment_method_configured_at: string | null
@@ -2290,6 +3037,7 @@ export type Database = {
           pdis_infant_safe_sleep_completed_at: string | null
           pdis_injury_prevention_completed_at: string | null
           pdis_medication_administration_part_one_completed_at: string | null
+          pdis_playground_safety_completed_at: string | null
           pdis_preventing_child_abuse_completed_at: string | null
           pdis_preventing_shaken_baby_completed_at: string | null
           pdis_recognizing_impact_of_bias_completed_at: string | null
@@ -2310,6 +3058,7 @@ export type Database = {
           related_to_all_children: boolean | null
           related_to_relationship: string | null
           related_to_some_children: boolean | null
+          review_started_at: string[] | null
           safe_sleep_for_infants_training_completed_at: string | null
           safety_attestation: string[] | null
           satisfaction_current_experience: string | null
@@ -2323,6 +3072,7 @@ export type Database = {
           submitted_log: string[] | null
           tc_tcpa: boolean | null
           training_completed_at: string | null
+          training_upload_files: Json | null
           type: Database["public"]["Enums"]["Provider Type"] | null
           w9: string[] | null
           w9_approved_at: string | null
@@ -2340,6 +3090,7 @@ export type Database = {
           application_reviewed_at?: string | null
           approved?: boolean | null
           approved_at?: string | null
+          assignee?: string | null
           attendance_tracking_system?: Json | null
           background_check_links?: string[] | null
           background_check_passed_at?: string | null
@@ -2375,10 +3126,12 @@ export type Database = {
           current_benefits?: Json | null
           custom_message?: string | null
           custom_message_type?: Database["public"]["Enums"]["Custom Message Type"]
+          decision_log?: string[] | null
           email?: string | null
           enterprise_zone_type?: string | null
           family_invited_at?: string | null
           first_name?: string | null
+          first_payment_received_at?: string | null
           gpqc_capabilities?: string | null
           gpqc_children_removed?: string | null
           gpqc_experienced?: string | null
@@ -2419,6 +3172,7 @@ export type Database = {
           number_of_children?: number | null
           onboarding_call_at?: string | null
           other_adults?: Json | null
+          other_adults_background_check_completed_timestamps?: string[] | null
           other_background_checks_sent_emails?: string[] | null
           owner?: string | null
           participation_survey_1_received_at?: string | null
@@ -2432,6 +3186,7 @@ export type Database = {
           participation_survey_3_sent_at?: string | null
           pay_per_month?: number | null
           pay_rate?: string | null
+          pay_rate_type?: string | null
           pay_types?: Json | null
           payment_enabled?: boolean
           payment_method_configured_at?: string | null
@@ -2441,6 +3196,7 @@ export type Database = {
           pdis_infant_safe_sleep_completed_at?: string | null
           pdis_injury_prevention_completed_at?: string | null
           pdis_medication_administration_part_one_completed_at?: string | null
+          pdis_playground_safety_completed_at?: string | null
           pdis_preventing_child_abuse_completed_at?: string | null
           pdis_preventing_shaken_baby_completed_at?: string | null
           pdis_recognizing_impact_of_bias_completed_at?: string | null
@@ -2461,6 +3217,7 @@ export type Database = {
           related_to_all_children?: boolean | null
           related_to_relationship?: string | null
           related_to_some_children?: boolean | null
+          review_started_at?: string[] | null
           safe_sleep_for_infants_training_completed_at?: string | null
           safety_attestation?: string[] | null
           satisfaction_current_experience?: string | null
@@ -2474,6 +3231,7 @@ export type Database = {
           submitted_log?: string[] | null
           tc_tcpa?: boolean | null
           training_completed_at?: string | null
+          training_upload_files?: Json | null
           type?: Database["public"]["Enums"]["Provider Type"] | null
           w9?: string[] | null
           w9_approved_at?: string | null
@@ -2491,6 +3249,7 @@ export type Database = {
           application_reviewed_at?: string | null
           approved?: boolean | null
           approved_at?: string | null
+          assignee?: string | null
           attendance_tracking_system?: Json | null
           background_check_links?: string[] | null
           background_check_passed_at?: string | null
@@ -2526,10 +3285,12 @@ export type Database = {
           current_benefits?: Json | null
           custom_message?: string | null
           custom_message_type?: Database["public"]["Enums"]["Custom Message Type"]
+          decision_log?: string[] | null
           email?: string | null
           enterprise_zone_type?: string | null
           family_invited_at?: string | null
           first_name?: string | null
+          first_payment_received_at?: string | null
           gpqc_capabilities?: string | null
           gpqc_children_removed?: string | null
           gpqc_experienced?: string | null
@@ -2570,6 +3331,7 @@ export type Database = {
           number_of_children?: number | null
           onboarding_call_at?: string | null
           other_adults?: Json | null
+          other_adults_background_check_completed_timestamps?: string[] | null
           other_background_checks_sent_emails?: string[] | null
           owner?: string | null
           participation_survey_1_received_at?: string | null
@@ -2583,6 +3345,7 @@ export type Database = {
           participation_survey_3_sent_at?: string | null
           pay_per_month?: number | null
           pay_rate?: string | null
+          pay_rate_type?: string | null
           pay_types?: Json | null
           payment_enabled?: boolean
           payment_method_configured_at?: string | null
@@ -2592,6 +3355,7 @@ export type Database = {
           pdis_infant_safe_sleep_completed_at?: string | null
           pdis_injury_prevention_completed_at?: string | null
           pdis_medication_administration_part_one_completed_at?: string | null
+          pdis_playground_safety_completed_at?: string | null
           pdis_preventing_child_abuse_completed_at?: string | null
           pdis_preventing_shaken_baby_completed_at?: string | null
           pdis_recognizing_impact_of_bias_completed_at?: string | null
@@ -2612,6 +3376,7 @@ export type Database = {
           related_to_all_children?: boolean | null
           related_to_relationship?: string | null
           related_to_some_children?: boolean | null
+          review_started_at?: string[] | null
           safe_sleep_for_infants_training_completed_at?: string | null
           safety_attestation?: string[] | null
           satisfaction_current_experience?: string | null
@@ -2625,6 +3390,7 @@ export type Database = {
           submitted_log?: string[] | null
           tc_tcpa?: boolean | null
           training_completed_at?: string | null
+          training_upload_files?: Json | null
           type?: Database["public"]["Enums"]["Provider Type"] | null
           w9?: string[] | null
           w9_approved_at?: string | null
@@ -3212,7 +3978,59 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      v_family_application_snapshot_history: {
+        Row: {
+          child_first_name_primary: string | null
+          child_last_name_primary: string | null
+          clerk_user_id: string | null
+          current_first_name: string | null
+          current_last_name: string | null
+          current_submitted_at: string | null
+          email_primary: string | null
+          family_snapshot_created_at: string | null
+          family_snapshot_id: number | null
+          first_name_primary: string | null
+          last_name_primary: string | null
+          new_submitted_at: string | null
+          old_submitted_at: string | null
+          original_family_id: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_original_family_application"
+            columns: ["original_family_id"]
+            isOneToOne: false
+            referencedRelation: "cap_family_application"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_provider_application_snapshot_history: {
+        Row: {
+          care_setting: string | null
+          clerk_user_id: string | null
+          current_first_name: string | null
+          current_last_name: string | null
+          current_submitted_at: string | null
+          email: string | null
+          first_name: string | null
+          last_name: string | null
+          new_application_submitted_at: string | null
+          old_application_submitted_at: string | null
+          original_provider_id: number | null
+          provider_snapshot_created_at: string | null
+          provider_snapshot_id: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_original_provider_application"
+            columns: ["original_provider_id"]
+            isOneToOne: false
+            referencedRelation: "cap_provider_application"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       family_normalize_core: {
@@ -3238,6 +4056,7 @@ export type Database = {
         | "Need More Info"
         | "Expired"
         | "Under Review"
+        | "Application Withdrawn"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -3379,6 +4198,7 @@ export const Constants = {
         "Need More Info",
         "Expired",
         "Under Review",
+        "Application Withdrawn",
       ],
     },
   },
