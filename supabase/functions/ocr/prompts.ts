@@ -445,6 +445,7 @@ export function cprPrompt(rawData: unknown): Prompt {
       "The agent will say if the CPR certification is validated, and summarize anything else in the document that is relevant.",
       "The agent will say what organization issued the certificate (e.g., American Heart Association, Red Cross).",
       "The agent will flag if the certificate is expired or over 2 years old.",
+      "Certificates may mention requiring additional courses, skills sessions, or future training to complete - ignore this text and mark as valid if the certificate shows completion of CPR/First Aid training.",
       "The request will look like:",
       kv("name", "[First Last]"),
       responseFormat(),
