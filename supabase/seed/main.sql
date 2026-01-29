@@ -10,14 +10,14 @@ VALUES
     (2, 'primary', 2, 'Family', 'Name', '', '', '1705 17th St', '#200', 'Denver', 'CO', '80202'),
     (3, 'primary', 3, 'Family', 'Name', '', '', '1705 17th St', '#200', 'Denver', 'CO', '80202');
 
-INSERT INTO child (id, family_id, first_name, last_name, monthly_allocation, prorated_allocation, status, payment_enabled)
+INSERT INTO child (id, family_id, first_name, last_name, monthly_allocation, prorated_allocation, status, payment_enabled, dob)
 VALUES
-    (1, 1, 'Child 1', 'Name', 1200, 600, 'Approved', TRUE),
-    (2, 1, 'Child 2', 'Name', 1000, 800, 'Approved', TRUE),
-    (3, 2, 'Child 3', 'Name', 1200, 600, 'Approved', TRUE),
-    (4, 2, 'Child 4', 'Name', 1000, 800, 'Approved', TRUE),
-    (5, 3, 'Child 5', 'Name', 1200, 600, 'Approved', TRUE),
-    (6, 3, 'Child 6', 'Name', 1000, 800, 'Approved', TRUE);
+    (1, 1, 'Child 1', 'Name', 1200, 600, 'Approved', TRUE, CURRENT_DATE - INTERVAL '1 year'),
+    (2, 1, 'Child 2', 'Name', 1000, 800, 'Approved', TRUE, CURRENT_DATE - INTERVAL '1 year'),
+    (3, 2, 'Child 3', 'Name', 1200, 600, 'Approved', TRUE, CURRENT_DATE - INTERVAL '1 year'),
+    (4, 2, 'Child 4', 'Name', 1000, 800, 'Approved', TRUE, CURRENT_DATE - INTERVAL '1 year'),
+    (5, 3, 'Child 5', 'Name', 1200, 600, 'Approved', TRUE, CURRENT_DATE - INTERVAL '1 year'),
+    (6, 3, 'Child 6', 'Name', 1000, 800, 'Approved', TRUE, CURRENT_DATE - INTERVAL '1 year');
 
 INSERT INTO provider (id, name, first_name, last_name, email, phone, care_location_address_1, care_location_address_2, care_location_city, care_location_state, care_location_zip, preferred_language, status, type, payment_enabled, cpr_training_link, cpr_certified)
 VALUES

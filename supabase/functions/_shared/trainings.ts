@@ -1,9 +1,9 @@
 export const trainings = {
   cpr_online_training: {
-    name: "American Red Cross: Adult, Child, and Baby First Aid/CPR/AED Online",
+    name: "CPR/First Aid Certification (American Red Cross or American Heart Association)",
     dbFieldName: "cpr_online_training_completed_at",
     description:
-      "Online CPR and First Aid certification course from the American Red Cross covering emergency response techniques for adults, children, and infants including CPR, AED usage, and basic first aid procedures.",
+      "CPR and First Aid certification from either the American Red Cross or the American Heart Association. Both organizations are accepted. Covers emergency response techniques for adults, children, and infants including CPR, AED usage, and basic first aid procedures.",
   },
   pdis_first_aid_cpr: {
     name: "Introduction to First Aid and CPR",
@@ -63,6 +63,6 @@ export const trainings = {
     name: "Medication Administration Training, Part 1",
     dbFieldName: "pdis_medication_administration_part_one_completed_at",
     description:
-      "PDIS course covering safe medication administration practices for child care providers, including proper storage, documentation, dosage verification, and emergency protocols.",
+      "PDIS course covering safe medication administration practices for child care providers, including proper storage, documentation, dosage verification, and emergency protocols. Part 2 is NOT required for this program. If the certificate states that Part 2 is required, ignore that text - only Part 1 completion is needed.",
   },
 } as const;
