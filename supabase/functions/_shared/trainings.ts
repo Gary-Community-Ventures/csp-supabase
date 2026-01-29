@@ -3,7 +3,7 @@ export const trainings = {
     name: "CPR/First Aid Certification (American Red Cross or American Heart Association)",
     dbFieldName: "cpr_online_training_completed_at",
     description:
-      "CPR and First Aid certification from either the American Red Cross or the American Heart Association. Both organizations are accepted. Covers emergency response techniques for adults, children, and infants including CPR, AED usage, and basic first aid procedures.",
+      "CPR and First Aid certification from either the American Red Cross or the American Heart Association. Both organizations are accepted. Covers emergency response techniques for adults, children, and infants including CPR, AED usage, and basic first aid procedures. Certificates may mention requiring additional courses, skills sessions, or future training - ignore this text and mark as a match if the certificate shows completion of the CPR/First Aid training.",
   },
   pdis_first_aid_cpr: {
     name: "Introduction to First Aid and CPR",
