@@ -1,0 +1,198 @@
+-- Curated Supabase views for Scry's first AI integration.
+--
+-- Day 1 is Supabase-only. Heroku Postgres payment/allocation/attendance
+-- tables are intentionally excluded until iteration 2.
+--
+-- These views are analysis-first and PII-light. They omit raw names, emails,
+-- phone numbers, street addresses, exact dates of birth, link IDs, Clerk IDs,
+-- license numbers, upload URLs, background-check links, training links, and
+-- direct form submission IDs.
+
+BEGIN;
+
+CREATE SCHEMA IF NOT EXISTS analytics;
+
+COMMENT ON SCHEMA analytics IS
+  'Curated read-only reporting surface for Scry natural-language analytics.';
+
+CREATE OR REPLACE VIEW analytics.families
+WITH (security_barrier = true) AS
+SELECT
+  f.id AS family_id,
+  f.created_at,
+  f.referred_by,
+  f.size AS family_size,
+  CASE
+    WHEN f.yearly_income IS NULL THEN NULL
+    WHEN f.yearly_income < 25000 THEN '<25k'
+    WHEN f.yearly_income < 50000 THEN '25k-50k'
+    WHEN f.yearly_income < 75000 THEN '50k-75k'
+    WHEN f.yearly_income < 100000 THEN '75k-100k'
+    ELSE '100k+'
+  END AS yearly_income_band,
+  f.zip AS family_zip,
+  f.language,
+  f.waitlist,
+  f.approved AS approved_date,
+  f.portal_invite_sent_at IS NOT NULL AS portal_invite_sent,
+  f.provider_invited_at IS NOT NULL AS provider_invited
+FROM public.family f;
+
+CREATE OR REPLACE VIEW analytics.guardians
+WITH (security_barrier = true) AS
+SELECT
+  g.id AS guardian_id,
+  g.family_id,
+  g.created_at,
+  g.type AS guardian_type,
+  g.city,
+  g.state,
+  g.zip,
+  CASE
+    WHEN g.dob IS NULL THEN NULL
+    ELSE date_part('year', age(current_date, g.dob))::int
+  END AS age_years,
+  g.race_ethnicity,
+  g.why_need_child_care
+FROM public.guardian g;
+
+CREATE OR REPLACE VIEW analytics.children
+WITH (security_barrier = true) AS
+SELECT
+  c.id AS child_id,
+  c.family_id,
+  c.created_at,
+  CASE
+    WHEN c.dob IS NULL THEN NULL
+    ELSE date_part('year', age(current_date, c.dob))::int
+  END AS age_years,
+  c.status,
+  c.payment_enabled,
+  c.wishlist,
+  round(c.monthly_allocation::numeric, 2) AS monthly_allocation_dollars,
+  round(c.prorated_allocation::numeric, 2) AS prorated_allocation_dollars,
+  c.race_ethnicity,
+  c.current_care,
+  c.language
+FROM public.child c;
+
+CREATE OR REPLACE VIEW analytics.providers
+WITH (security_barrier = true) AS
+SELECT
+  p.id AS provider_id,
+  p.created_at,
+  p.status,
+  p.type AS provider_type,
+  p.payment_enabled,
+  p.approved,
+  p.waitlist,
+  p.approved_at,
+  p.care_location_city AS city,
+  p.care_location_state AS state,
+  p.care_location_zip AS zip,
+  p.preferred_language,
+  p.licensed,
+  p.license_type,
+  p.ssn_or_itin,
+  p.care_setting,
+  p.related_to_some_children,
+  p.related_to_relationship,
+  p.related_to_all_children,
+  p.number_of_children,
+  p.children_under_2,
+  p.cpr_certified,
+  p.other_adults,
+  p.pay_types,
+  p.pay_rate,
+  p.pay_per_month,
+  p.satisfaction_current_pay,
+  p.satisfaction_current_experience,
+  p.accepted_forms_of_payment,
+  p.attendance_tracking_system,
+  p.when_families_pay,
+  p.cpr_online_training_completed_at IS NOT NULL AS cpr_online_training_completed,
+  p.child_safety_module_training_completed_at IS NOT NULL AS child_safety_module_training_completed,
+  p.safe_sleep_for_infants_training_completed_at IS NOT NULL AS safe_sleep_training_completed,
+  p.home_safety_and_injury_prevention_training_completed_at IS NOT NULL AS home_safety_training_completed,
+  p.pdis_first_aid_cpr_completed_at IS NOT NULL AS pdis_first_aid_cpr_completed,
+  p.pdis_standard_precautions_completed_at IS NOT NULL AS pdis_standard_precautions_completed,
+  p.pdis_preventing_child_abuse_completed_at IS NOT NULL AS pdis_preventing_child_abuse_completed,
+  p.pdis_infant_safe_sleep_completed_at IS NOT NULL AS pdis_infant_safe_sleep_completed,
+  p.pdis_emergency_preparedness_completed_at IS NOT NULL AS pdis_emergency_preparedness_completed,
+  p.pdis_injury_prevention_completed_at IS NOT NULL AS pdis_injury_prevention_completed,
+  p.pdis_preventing_shaken_baby_completed_at IS NOT NULL AS pdis_preventing_shaken_baby_completed,
+  p.pdis_recognizing_impact_of_bias_completed_at IS NOT NULL AS pdis_recognizing_impact_of_bias_completed,
+  p.pdis_medication_administration_part_one_completed_at IS NOT NULL AS pdis_medication_administration_part_one_completed,
+  p.portal_invite_sent_at IS NOT NULL AS portal_invite_sent,
+  p.family_invited_at IS NOT NULL AS family_invited,
+  p.rates_configured_at IS NOT NULL AS rates_configured,
+  p.payment_method_configured_at IS NOT NULL AS payment_method_configured
+FROM public.provider p;
+
+CREATE OR REPLACE VIEW analytics.provider_child_relationships
+WITH (security_barrier = true) AS
+SELECT
+  pcm.id AS relationship_id,
+  pcm.created_at,
+  pcm.provider_id,
+  pcm.child_id,
+  c.family_id
+FROM public.provider_child_mapping pcm
+JOIN public.child c
+  ON c.id = pcm.child_id;
+
+CREATE OR REPLACE VIEW analytics.family_summary
+WITH (security_barrier = true) AS
+SELECT
+  f.id AS family_id,
+  count(DISTINCT c.id) AS child_count,
+  count(DISTINCT pcm.provider_id) AS provider_count,
+  count(DISTINCT c.id) FILTER (WHERE c.payment_enabled) AS payment_enabled_child_count,
+  count(DISTINCT c.id) FILTER (WHERE c.status = 'Approved') AS approved_child_count,
+  sum(c.monthly_allocation)::numeric AS total_monthly_allocation_dollars,
+  sum(c.prorated_allocation)::numeric AS total_prorated_allocation_dollars
+FROM public.family f
+LEFT JOIN public.child c
+  ON c.family_id = f.id
+LEFT JOIN public.provider_child_mapping pcm
+  ON pcm.child_id = c.id
+GROUP BY f.id;
+
+CREATE OR REPLACE VIEW analytics.provider_summary
+WITH (security_barrier = true) AS
+SELECT
+  p.id AS provider_id,
+  count(DISTINCT pcm.child_id) AS child_count,
+  count(DISTINCT c.family_id) AS family_count,
+  count(DISTINCT pcm.child_id) FILTER (WHERE c.payment_enabled) AS payment_enabled_child_count,
+  count(DISTINCT pcm.child_id) FILTER (WHERE c.status = 'Approved') AS approved_child_count
+FROM public.provider p
+LEFT JOIN public.provider_child_mapping pcm
+  ON pcm.provider_id = p.id
+LEFT JOIN public.child c
+  ON c.id = pcm.child_id
+GROUP BY p.id;
+
+CREATE OR REPLACE VIEW analytics.program_overview
+WITH (security_barrier = true) AS
+SELECT
+  (SELECT count(*) FROM public.family) AS family_count,
+  (SELECT count(*) FROM public.guardian) AS guardian_count,
+  (SELECT count(*) FROM public.child) AS child_count,
+  (SELECT count(*) FROM public.provider) AS provider_count,
+  (SELECT count(*) FROM public.provider_child_mapping) AS provider_child_relationship_count,
+  (SELECT count(*) FROM public.child WHERE payment_enabled) AS payment_enabled_child_count,
+  (SELECT count(*) FROM public.provider WHERE payment_enabled) AS payment_enabled_provider_count,
+  (SELECT count(*) FROM public.child WHERE status = 'Approved') AS approved_child_count,
+  (SELECT count(*) FROM public.provider WHERE status = 'Approved') AS approved_provider_count;
+
+COMMENT ON VIEW analytics.families IS 'PII-light family enrollment and milestone facts from Supabase.';
+COMMENT ON VIEW analytics.guardians IS 'Guardian demographics without direct contact fields or exact DOB.';
+COMMENT ON VIEW analytics.children IS 'Child facts with age in years instead of exact DOB and no names.';
+COMMENT ON VIEW analytics.providers IS 'Provider readiness, location, type, and milestone facts without direct contact fields.';
+COMMENT ON VIEW analytics.provider_child_relationships IS 'Provider-child-family relationship facts from Supabase.';
+COMMENT ON VIEW analytics.family_summary IS 'Rollups by family for child/provider counts and allocation amounts.';
+COMMENT ON VIEW analytics.provider_summary IS 'Rollups by provider for child/family counts.';
+COMMENT ON VIEW analytics.program_overview IS 'Single-row high-level Supabase program counts.';
+
+COMMIT;
